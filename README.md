@@ -123,324 +123,291 @@ Projeto sobe completamente utilizando:
 
 ---
 
-# 🧩 Módulos do Sistema
-
-## 1. Segurança e Controle de Acesso
-
-Responsável pela autenticação e autorização dos usuários.
-
-### Usuário
-
-| Campo |
-|--------|
-| id |
-| nome |
-| email |
-| senha |
-| status |
-| último acesso |
-| funcionário_id |
-
-### Perfil (Role)
-
-| Campo |
-|--------|
-| id |
-| nome |
-| descrição |
-
-Perfis iniciais:
-
-- ADMIN
-- SUPERVISOR
-- OPERADOR
-- MOTORISTA
-
-### Permissões
-
-(Evolução futura)
-
-### Departamento
-
-Exemplos:
-
-- Logística
-- Administrativo
-- Financeiro
-- Comercial
-- RH
-
----
-
-## 2. Funcionários
-
-Cadastro completo dos colaboradores.
-
-### Funcionário
-
-- matrícula
-- nome
-- CPF
-- RG
-- data nascimento
-- telefone
-- email
-- cargo
-- departamento
-- endereço
-- data admissão
-- status
-
-### Cargo
-
-Exemplos:
-
-- Motorista
-- Supervisor
-- Gerente
-- Analista
-- Assistente
-
----
-
-## 3. Clientes
-
-Cadastro de clientes.
-
-Informações:
-
-- Razão Social
-- Nome Fantasia
-- CNPJ
-- Inscrição Estadual
-- Telefone
-- Email
-- Contato Principal
-- Endereço
-
----
-
-## 4. Endereços
-
-Entidade compartilhada por diversos módulos.
-
-Campos:
-
-- CEP
-- Logradouro
-- Número
-- Complemento
-- Bairro
-- Cidade
-- Estado
-- País
-- Latitude
-- Longitude
-
-Utilizado por:
-
-- Funcionários
-- Clientes
-- Centros de Distribuição
-- Origem da Entrega
-- Destino da Entrega
-
----
-
-## 5. Veículos
-
-Cadastro da frota.
-
-Campos principais:
-
-- Placa
-- Renavam
-- Modelo
-- Fabricante
-- Ano
-- Capacidade
-- Quilometragem
-
-Status:
-
-- Disponível
-- Em rota
-- Em manutenção
-- Inativo
-
----
-
-## 6. Motoristas
-
-Especialização de Funcionário.
-
-Informações adicionais:
-
-- CNH
-- Categoria
-- Validade
-- Observações
-
----
-
-## 7. Operações Logísticas
-
-Módulo principal do sistema.
-
-### Entrega
-
-Campos principais:
-
-- Código
-- Cliente
-- Motorista
-- Veículo
-- Origem
-- Destino
-- Peso
-- Volume
-- Valor da carga
-- Datas
-- Status
-
-Status possíveis:
-
-- Criada
-- Em preparação
-- Carregada
-- Em rota
-- Entregue
-- Cancelada
-- Atrasada
-
----
-
-## 8. Histórico da Entrega
-
-Registra todas as mudanças de status da entrega.
-
----
-
-## 9. Ocorrências
-
-Tipos:
-
-- Cliente ausente
-- Veículo quebrado
-- Trânsito
-- Endereço incorreto
-- Mercadoria danificada
-- Outro
-
----
-
-## 10. Documentos
-
-Arquivos relacionados à entrega.
-
----
-
-## 11. Comprovantes
-
-- Foto
-- Assinatura
-- Documento Fiscal
-
----
-
-## 12. Centros de Distribuição
-
-Cadastro dos CDs da empresa.
-
----
-
-## 13. Rotas
-
-Gerenciamento das rotas.
-
-Informações:
-
-- Origem
-- Destino
-- Distância
-- Tempo estimado
-
----
-
-## 14. Manutenção de Veículos
-
-Controle das manutenções.
-
-Informações:
-
-- Tipo
-- Período
-- Custo
-- Fornecedor
-
----
-
-## 15. Dashboard
-
-Indicadores principais:
-
-- Total de entregas
-- Entregas em andamento
-- Entregas atrasadas
-- Entregas concluídas
-- Motoristas ativos
-- Veículos disponíveis
-- Clientes ativos
-
----
-
-## 16. Relatórios
-
-Relatórios previstos:
-
-- Entregas por período
-- Entregas por cliente
-- Entregas por motorista
-- Utilização da frota
-- Ocorrências
-- Custos Operacionais
-
----
-
-## 17. Auditoria
-
-Registro completo das alterações do sistema.
-
-Informações:
-
-- Tabela
-- Registro
-- Ação
-- Valor anterior
-- Valor novo
-- Usuário
-- Data
-
----
-
-## 18. Notificações
-
-Comunicação interna do sistema.
-
-Campos:
-
-- Usuário
-- Título
-- Mensagem
-- Tipo
-- Lida
-- Data de criação
-
----
-
 # 🏗 Arquitetura
 
+```mermaid
+erDiagram
+    %% ==========================================
+    %% MÓDULO 1: SEGURANÇA E ACESSO
+    %% ==========================================
+    Usuario {
+        int id PK
+        string nome
+        string email
+        string senha
+        string status
+        datetime ultimo_acesso
+        int funcionario_id FK
+    }
+    Perfil {
+        int id PK
+        string nome
+        string descricao
+    }
+    Permissao {
+        int id PK
+        string nome
+        string descricao
+    }
+    AreaDepartamento {
+        int id PK
+        string nome
+        string descricao
+    }
+
+    %% ==========================================
+    %% MÓDULO 2: FUNCIONÁRIOS
+    %% ==========================================
+    Funcionario {
+        int id PK
+        string matricula
+        string nome
+        string CPF
+        string RG
+        date data_nascimento
+        string telefone
+        string email
+        int cargo_id FK
+        int departamento_id FK
+        int endereco_id FK
+        date data_admissao
+        string status
+    }
+    Cargo {
+        int id PK
+        string nome
+        string descricao
+    }
+
+    %% ==========================================
+    %% MÓDULO 3: CLIENTES
+    %% ==========================================
+    Cliente {
+        int id PK
+        string razao_social
+        string nome_fantasia
+        string CNPJ
+        string inscricao_estadual
+        string telefone
+        string email
+        string contato_principal
+        int endereco_id FK
+        string status
+    }
+
+    %% ==========================================
+    %% MÓDULO 4: ENDEREÇOS
+    %% ==========================================
+    Endereco {
+        int id PK
+        string CEP
+        string logradouro
+        string numero
+        string complemento
+        string bairro
+        string cidade
+        string estado
+        string pais
+        decimal latitude
+        decimal longitude
+    }
+
+    %% ==========================================
+    %% MÓDULO 5: VEÍCULOS & MÓDULO 14: MANUTENÇÃO
+    %% ==========================================
+    Veiculo {
+        int id PK
+        string placa
+        string renavam
+        string modelo
+        string fabricante
+        int ano_fabricacao
+        int ano_modelo
+        decimal capacidade_peso
+        decimal capacidade_volume
+        int quilometragem
+        string status
+    }
+    Manutencao {
+        int id PK
+        int veiculo_id FK
+        string tipo
+        string descricao
+        date data_inicio
+        date data_fim
+        decimal custo
+        string fornecedor
+    }
+
+    %% ==========================================
+    %% MÓDULO 6: MOTORISTAS
+    %% ==========================================
+    Motorista {
+        int id PK
+        int funcionario_id FK
+        string CNH
+        string categoria
+        date validade_CNH
+        text observacoes
+    }
+
+    %% ==========================================
+    %% MÓDULO 7: OPERAÇÕES DE ENTREGA (PRINCIPAL)
+    %% ==========================================
+    Entrega {
+        int id PK
+        string codigo
+        int cliente_id FK
+        int motorista_id FK
+        int veiculo_id FK
+        int origem_endereco_id FK
+        int destino_endereco_id FK
+        decimal peso
+        decimal volume
+        decimal valor_carga
+        datetime data_criacao
+        datetime previsao_entrega
+        datetime data_entrega
+        string status
+        text observacoes
+    }
+
+    %% ==========================================
+    %% MÓDULOS 8, 9, 10, 11: RELACIONADOS À ENTREGA
+    %% ==========================================
+    HistoricoEntrega {
+        int id PK
+        int entrega_id FK
+        string status_anterior
+        string status_novo
+        int usuario_id FK
+        datetime data_alteracao
+        text observacao
+    }
+    Ocorrencia {
+        int id PK
+        int entrega_id FK
+        string tipo
+        string descricao
+        datetime data_ocorrencia
+        int usuario_id FK
+        string status
+    }
+    Documento {
+        int id PK
+        int entrega_id FK
+        string nome_arquivo
+        string tipo_arquivo
+        string URL
+        datetime data_upload
+        int usuario_id FK
+    }
+    Comprovante {
+        int id PK
+        int entrega_id FK
+        string foto_entrega
+        string assinatura_cliente
+        string documento_fiscal
+        datetime data_envio
+    }
+
+    %% ==========================================
+    %% MÓDULO 12: CENTROS DE DISTRIBUIÇÃO
+    %% ==========================================
+    CentroDistribuicao {
+        int id PK
+        string nome
+        string codigo
+        int endereco_id FK
+        string telefone
+        int gerente_id FK
+        string status
+    }
+
+    %% ==========================================
+    %% MÓDULO 13: ROTAS
+    %% ==========================================
+    Rota {
+        int id PK
+        string nome
+        string origem
+        string destino
+        decimal distancia
+        string tempo_estimado
+        string status
+    }
+
+    %% ==========================================
+    %% MÓDULOS COMUNS (17: AUDITORIA & 18: NOTIFICAÇÕES)
+    %% ==========================================
+    Auditoria {
+        int id PK
+        string tabela
+        int registro_id
+        string acao
+        text valor_anterior
+        text valor_novo
+        int usuario_id FK
+        datetime data
+    }
+    Notificacao {
+        int id PK
+        int usuario_id FK
+        string titulo
+        string mensagem
+        string tipo
+        boolean lida
+        datetime data_criacao
+    }
+
+    %% ==========================================
+    %% RELACIONAMENTOS (CARDINALIDADES)
+    %% ==========================================
+    
+    %% Segurança e Acesso
+    Funcionario ||--o| Usuario : "possui conta"
+    Usuario }o--o| Perfil : "tem"
+    Usuario }o--o| AreaDepartamento : "pertence"
+    
+    %% Funcionários
+    Cargo ||--o{ Funcionario : "alocado"
+    AreaDepartamento ||--o{ Funcionario : "alocado"
+    Endereco ||--o{ Funcionario : "reside"
+
+    %% Motoristas
+    Funcionario ||--o| Motorista : "eh"
+
+    %% Clientes e CDs
+    Endereco ||--o{ Cliente : "localizado"
+    Endereco ||--o| CentroDistribuicao : "localizado"
+    Funcionario ||--o{ CentroDistribuicao : "gerencia"
+
+    %% Veículos e Manutenção
+    Veiculo ||--o{ Manutencao : "sofre"
+
+    %% Entrega e seus Endereços (Origem / Destino)
+    Endereco ||--o{ Entrega : "origem"
+    Endereco ||--o{ Entrega : "destino"
+    
+    %% Vínculos da Entrega
+    Cliente ||--o{ Entrega : "solicita"
+    Motorista ||--o{ Entrega : "transporta"
+    Veiculo ||--o{ Entrega : "utilizado"
+
+    %% Satélites da Entrega
+    Entrega ||--o{ HistoricoEntrega : "registra"
+    Entrega ||--o{ Ocorrencia : "sofre"
+    Entrega ||--o{ Documento : "contem"
+    Entrega ||--o{ Comprovante : "gera"
+
+    %% Auditoria, Notificações e Ações de Usuários
+    Usuario ||--o{ HistoricoEntrega : "modificou"
+    Usuario ||--o{ Ocorrencia : "registrou"
+    Usuario ||--o{ Documento : "enviou"
+    Usuario ||--o{ Auditoria : "realizou"
+    Usuario ||--o{ Notificacao : "recebe"
 ```
+
 Frontend (React)
 
 ↓
