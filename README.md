@@ -408,31 +408,6 @@ erDiagram
     Usuario ||--o{ Notificacao : "recebe"
 ```
 
-Frontend (React)
-
-↓
-
-API REST
-
-↓
-
-Spring Boot
-
-↓
-
-Service
-
-↓
-
-Repository
-
-↓
-
-PostgreSQL
-```
-
----
-
 # 📦 Banco de Dados
 
 Banco principal:
