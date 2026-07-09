@@ -64,62 +64,17 @@ Este projeto possui foco em aprendizado de tecnologias modernas utilizadas pelo 
 
 ---
 
-# 📁 Estrutura do Projeto
+# 🗂️ Modelagem do Banco de Dados
 
-```
-logistics-management-system/
+O modelo inicial do banco foi criado utilizando DB Diagram.
 
-backend/
-frontend/
-database/
-docker/
-docs/
+🔗 [📌 Ver Diagrama do Banco de Dados](https://dbdiagram.io/d/Sistema-de-Gestao-de-Operacoes-Logisticas-6a4fda1136d348d120a910dc)
 
-README.md
-docker-compose.yml
-```
+# 🎨 Protótipo da Interface
 
----
+A interface inicial do sistema foi desenvolvida como protótipo para validar a experiência do usuário e a organização dos módulos.
 
-# 🚀 Roadmap
-
-## ✅ Fase 1
-
-Preparação do ambiente.
-
-### Backend
-
-- [ ] Spring Boot
-- [ ] Java 21
-- [ ] PostgreSQL
-- [ ] Flyway
-- [ ] Swagger
-- [ ] Docker
-
-### Frontend
-
-- [ ] React
-- [ ] TypeScript
-- [ ] Vite
-- [ ] Tailwind
-- [ ] Axios
-- [ ] React Router
-- [ ] TanStack Query
-
-### Infra
-
-- [ ] Docker Compose
-- [ ] PostgreSQL
-- [ ] pgAdmin
-
-### Entrega
-
-Projeto sobe completamente utilizando:
-
-- Backend
-- Frontend
-- PostgreSQL
-- Docker Compose
+🔗 [📌 Ver Protótipo do Sistema](https://zp1v56uxy8rdx5ypatb0ockcb9tr6a-oci3--5173--639e0ff1.local-credentialless.webcontainer-api.io/)
 
 ---
 
@@ -407,48 +362,6 @@ erDiagram
     Usuario ||--o{ Auditoria : "realizou"
     Usuario ||--o{ Notificacao : "recebe"
 ```
-
-# 📦 Banco de Dados
-
-Banco principal:
-
-- PostgreSQL
-
-Controle de versões:
-
-- Flyway
-
----
-
-# 📚 Documentação da API
-
-A API será documentada utilizando:
-
-- Swagger UI
-- OpenAPI 3
-
----
-
-# 🔐 Segurança
-
-Será implementado:
-
-- JWT
-- Spring Security
-- Controle por Roles
-- Controle por Permissões
-- Refresh Token (futuro)
-
----
-
-# 🐳 Docker
-
-O projeto será executado através do Docker Compose contendo:
-
-- Backend
-- Frontend
-- PostgreSQL
-- pgAdmin
 
 ---
 
