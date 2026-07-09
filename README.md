@@ -1,4 +1,4 @@
-# 🚚 Logistics Management System (LMS)
+# 🚚 Sistema de Gestão de Operações Logísticas
 
 > Sistema completo para gestão logística de entregas, motoristas, veículos, centros de distribuição e operações.
 
@@ -6,7 +6,7 @@
 
 # 📖 Sobre o Projeto
 
-O Logistics Management System (LMS) é um sistema desenvolvido para gerenciar todo o processo logístico de uma empresa, desde o cadastro de clientes e funcionários até o controle completo das entregas.
+O Sistema de Gestão de Operações Logísticas é um sistema desenvolvido para gerenciar todo o processo logístico de uma empresa, desde o cadastro de clientes e funcionários até o controle completo das entregas.
 
 O objetivo é simular um sistema corporativo real, aplicando boas práticas de arquitetura, desenvolvimento Full Stack, segurança, escalabilidade e organização de código.
 
