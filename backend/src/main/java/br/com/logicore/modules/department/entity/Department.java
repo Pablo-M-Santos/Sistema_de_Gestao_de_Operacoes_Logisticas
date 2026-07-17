@@ -8,7 +8,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "area_department")
+@Table(name = "department")
 @Getter
 @Setter
 @NoArgsConstructor
@@ -34,9 +34,9 @@ public class Department {
 
     @CreationTimestamp
     @Column(name = "criado_em", updatable = false)
-    private LocalDateTime criadoEm;
+    private LocalDateTime criado_em;
 
     @UpdateTimestamp
     @Column(name = "atualizado_em")
-    private LocalDateTime atualizadoEm;
+    private LocalDateTime atualizado_em;
 }
