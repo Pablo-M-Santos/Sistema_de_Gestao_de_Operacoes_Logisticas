@@ -1,4 +1,4 @@
-CREATE TABLE area_departamento
+CREATE TABLE department
 (
     id            BIGSERIAL PRIMARY KEY,
     nome          VARCHAR(150)                             NOT NULL UNIQUE,
@@ -8,6 +8,3 @@ CREATE TABLE area_departamento
     criado_em     TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     atualizado_em TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
-
-
-CREATE INDEX idx_area_dept_nome ON area_departamento (nome);
