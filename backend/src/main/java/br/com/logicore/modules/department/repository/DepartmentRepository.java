@@ -1,6 +1,6 @@
-package br.com.logicore.modules.department.repository;
+package br.com.logicore.modules.repository;
 
-import br.com.logicore.modules.department.entity.Department;
+import br.com.logicore.modules.entity.Department;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

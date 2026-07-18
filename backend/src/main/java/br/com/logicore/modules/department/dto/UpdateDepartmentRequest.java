@@ -1,4 +1,4 @@
-package br.com.logicore.modules.department.dto;
+package br.com.logicore.modules.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
