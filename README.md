@@ -1,5 +1,10 @@
 # 🚚 Sistema de Gestão de Operações Logísticas
 
+<div align="center">
+
+![Status](https://img.shields.io/badge/status-em%20desenvolvimento-yellow)
+</div>
+
 > Sistema completo para gestão logística de entregas, motoristas, veículos, centros de distribuição e operações.
 
 ---
