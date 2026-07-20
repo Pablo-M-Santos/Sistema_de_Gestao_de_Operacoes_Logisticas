@@ -1,4 +1,4 @@
-package br.com.logicore.modules.entity;
+package br.com.logicore.modules.department.entity;
 
 import jakarta.persistence.*;
 import lombok.*;

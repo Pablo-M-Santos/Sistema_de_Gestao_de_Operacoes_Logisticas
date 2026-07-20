@@ -1,8 +1,8 @@
-package br.com.logicore.modules.mapper;
+package br.com.logicore.modules.department.mapper;
 
-import br.com.logicore.modules.dto.CreateDepartmentRequest;
-import br.com.logicore.modules.dto.DepartmentResponse;
-import br.com.logicore.modules.entity.Department;
+import br.com.logicore.modules.department.dto.CreateDepartmentRequest;
+import br.com.logicore.modules.department.dto.DepartmentResponse;
+import br.com.logicore.modules.department.entity.Department;
 import org.springframework.stereotype.Component;
 
 @Component

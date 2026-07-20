@@ -1,4 +1,4 @@
-package br.com.logicore.modules.dto;
+package br.com.logicore.modules.department.dto;
 
 import lombok.Builder;
 import lombok.Data;
