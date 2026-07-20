@@ -13,6 +13,6 @@ public class DepartmentResponse {
     private String descricao;
     private String sigla;
     private Boolean ativo;
-    private LocalDateTime criado_em;
-    private LocalDateTime atualizado_em;
+    private LocalDateTime criadoEm;
+    private LocalDateTime atualizadoEm;
 }

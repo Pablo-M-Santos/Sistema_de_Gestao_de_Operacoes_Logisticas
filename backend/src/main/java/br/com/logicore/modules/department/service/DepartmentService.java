@@ -6,11 +6,13 @@ import br.com.logicore.modules.department.dto.UpdateDepartmentRequest;
 import br.com.logicore.modules.department.entity.Department;
 import br.com.logicore.modules.department.mapper.DepartmentMapper;
 import br.com.logicore.modules.department.repository.DepartmentRepository;
+import br.com.logicore.modules.department.specification.DepartmentSpecification;
 import br.com.logicore.modules.department.validator.DepartmentValidator;
 
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,8 +37,10 @@ public class DepartmentService {
     }
 
     @Transactional(readOnly = true)
-    public Page<DepartmentResponse> findAll(Pageable pageable) {
-        return repository.findAll(pageable)
+    public Page<DepartmentResponse> findAll(Pageable pageable, String name, Boolean active) {
+        Specification<Department> specification = DepartmentSpecification.withFilters(name, active);
+
+        return repository.findAll(specification, pageable)
                 .map(mapper::toResponse);
     }
 

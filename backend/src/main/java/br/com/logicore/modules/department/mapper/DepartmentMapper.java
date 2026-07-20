@@ -23,8 +23,8 @@ public class DepartmentMapper {
                 .descricao(entity.getDescricao())
                 .sigla(entity.getSigla())
                 .ativo(entity.getAtivo())
-                .criado_em(entity.getCriado_em())
-                .atualizado_em(entity.getAtualizado_em())
+                .criadoEm(entity.getCriadoEm())
+                .atualizadoEm(entity.getAtualizadoEm())
                 .build();
     }
 }

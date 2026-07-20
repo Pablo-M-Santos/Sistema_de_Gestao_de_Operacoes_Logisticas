@@ -27,8 +27,11 @@ public class DepartmentController {
     }
 
     @GetMapping
-    public ResponseEntity<Page<DepartmentResponse>> getAll(Pageable pageable) {
-        return ResponseEntity.ok(service.findAll(pageable));
+    public ResponseEntity<Page<DepartmentResponse>> getAll(
+            Pageable pageable,
+            @RequestParam(required = false) String name,
+            @RequestParam(required = false) Boolean active) {
+        return ResponseEntity.ok(service.findAll(pageable, name, active));
     }
 
     @GetMapping("/{id}")
