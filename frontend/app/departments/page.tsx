@@ -185,8 +185,14 @@ export default function DepartmentsPage() {
         data={departments}
         search={search}
         status={status}
-        onSearchChangeAction={setSearch}
-        onStatusChangeAction={setStatus}
+        onSearchChangeAction={(val) => {
+          setSearch(val);
+          setPage(0);
+        }}
+        onStatusChangeAction={(val) => {
+          setStatus(val);
+          setPage(0);
+        }}
         pagination={pagination}
         onPageChangeAction={setPage}
         onViewAction={openView}

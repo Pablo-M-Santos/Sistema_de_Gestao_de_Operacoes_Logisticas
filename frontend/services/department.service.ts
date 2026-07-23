@@ -23,8 +23,10 @@ export async function getDepartments(
     params: {
       page,
       size: 20,
-      search,
-      status,
+
+      search: search.trim() || undefined,
+
+      status: status !== "ALL" ? status : undefined,
     },
   });
 
@@ -36,7 +38,6 @@ export async function createDepartment(data: CreateDepartmentRequest): Promise<D
 
   return response.data;
 }
-
 
 export async function updateDepartment(
   id: number,
