@@ -6,9 +6,9 @@ export const departamentos: Departamento[] = [
     nome: "Tecnologia da Informação",
     sigla: "TI",
     descricao: "Responsável pelos sistemas e infraestrutura tecnológica.",
-    status: "active",
-    createdAt: "2026-07-10",
-    updatedAt: "2026-07-20",
+    ativo: true,
+    criadoEm: "2026-07-10",
+    atualizadoEm: "2026-07-20",
   },
 
   {
@@ -16,9 +16,9 @@ export const departamentos: Departamento[] = [
     nome: "Logística",
     sigla: "LOG",
     descricao: "Gestão das operações de transporte e entregas.",
-    status: "active",
-    createdAt: "2026-07-08",
-    updatedAt: "2026-07-18",
+    ativo: true,
+    criadoEm: "2026-07-08",
+    atualizadoEm: "2026-07-18",
   },
 
   {
@@ -26,9 +26,9 @@ export const departamentos: Departamento[] = [
     nome: "Operações",
     sigla: "OPE",
     descricao: "Coordenação das rotas e equipes de campo.",
-    status: "active",
-    createdAt: "2026-07-05",
-    updatedAt: "2026-07-15",
+    ativo: true,
+    criadoEm: "2026-07-05",
+    atualizadoEm: "2026-07-15",
   },
 
   {
@@ -36,9 +36,9 @@ export const departamentos: Departamento[] = [
     nome: "Financeiro",
     sigla: "FIN",
     descricao: "Controle de contas, pagamentos e recebimentos.",
-    status: "active",
-    createdAt: "2026-06-28",
-    updatedAt: "2026-07-12",
+    ativo: true,
+    criadoEm: "2026-06-28",
+    atualizadoEm: "2026-07-12",
   },
 
   {
@@ -46,9 +46,9 @@ export const departamentos: Departamento[] = [
     nome: "Recursos Humanos",
     sigla: "RH",
     descricao: "Gestão de pessoas, admissões e folha de pagamento.",
-    status: "active",
-    createdAt: "2026-06-20",
-    updatedAt: "2026-07-10",
+    ativo: true,
+    criadoEm: "2026-06-20",
+    atualizadoEm: "2026-07-10",
   },
 
   {
@@ -56,8 +56,8 @@ export const departamentos: Departamento[] = [
     nome: "Manutenção",
     sigla: "MAN",
     descricao: "Manutenção preventiva e corretiva da frota.",
-    status: "inactive",
-    createdAt: "2026-05-30",
-    updatedAt: "2026-06-25",
+    ativo: false,
+    criadoEm: "2026-05-30",
+    atualizadoEm: "2026-06-25",
   },
 ];
