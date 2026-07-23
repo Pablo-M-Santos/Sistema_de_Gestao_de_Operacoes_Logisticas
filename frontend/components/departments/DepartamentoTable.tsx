@@ -124,7 +124,7 @@ export default function DepartamentoTable({ onViewAction, onEditAction, onToggle
   ];
 
   return (
-    <div className="animate-fade-up">
+    <div className="animate-fade-up overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
       <TableToolbar
         search={query}
         searchPlaceholder="Buscar por nome ou sigla..."
@@ -135,6 +135,8 @@ export default function DepartamentoTable({ onViewAction, onEditAction, onToggle
           setQuery("");
           setStatus("all");
         }}
+        totalItems={filtered.length}
+        itemLabel="departamento(s)"
       />
 
       <DataTable
