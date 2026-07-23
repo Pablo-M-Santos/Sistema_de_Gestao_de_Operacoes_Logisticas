@@ -71,7 +71,13 @@ export default function DepartamentoTable({
       key: "descricao",
       title: "Descrição",
       cellClassName: "max-w-xl",
-      render: (d) => <span className="block max-w-xl text-slate-500">{d.descricao}</span>,
+      render: (d) => {
+        const hasDescricao = d.descricao && d.descricao.trim().length > 0;
+
+        return (
+          <span className="block max-w-xl text-slate-500">{hasDescricao ? d.descricao : "-"}</span>
+        );
+      },
     },
     {
       key: "status",
