@@ -6,17 +6,9 @@ import { Eye, Pencil, Power } from "lucide-react";
 import type { Departamento } from "@/types/departamento";
 import { departamentos } from "@/data/departamento";
 
-import {
-  DataTable,
-  TableToolbar,
-  StatusBadge,
-} from "@/components/table";
+import { DataTable, TableToolbar, StatusBadge } from "@/components/table";
 
-import type {
-  TableColumn,
-  TableAction,
-  TableFilter,
-} from "@/components/table";
+import type { TableColumn, TableAction, TableFilter } from "@/components/table";
 
 type Props = {
   onViewAction: (d: Departamento) => void;
@@ -25,14 +17,9 @@ type Props = {
   onToggleAction: (d: Departamento) => void;
 };
 
-export default function DepartamentoTable({
-  onViewAction,
-  onEditAction,
-  onToggleAction,
-}: Props) {
+export default function DepartamentoTable({ onViewAction, onEditAction, onToggleAction }: Props) {
   const [query, setQuery] = useState("");
   const [status, setStatus] = useState("all");
-
 
   const filtered = useMemo(() => {
     return departamentos.filter((d) => {
@@ -42,23 +29,18 @@ export default function DepartamentoTable({
         d.sigla.toLowerCase().includes(query.toLowerCase());
 
       const statusMatch =
-        status === "all" ||
-        (status === "active" && d.ativo) ||
-        (status === "inactive" && !d.ativo);
+        status === "all" || (status === "active" && d.ativo) || (status === "inactive" && !d.ativo);
 
       return search && statusMatch;
     });
   }, [query, status]);
-
 
   const columns: TableColumn<Departamento>[] = [
     {
       key: "id",
       title: "ID",
       render: (d) => (
-        <span className="font-mono text-slate-500">
-          #{String(d.id).padStart(3, "0")}
-        </span>
+        <span className="font-mono text-slate-500">#{String(d.id).padStart(3, "0")}</span>
       ),
     },
 
@@ -71,9 +53,7 @@ export default function DepartamentoTable({
             {d.sigla}
           </div>
 
-          <span className="font-semibold text-slate-800">
-            {d.nome}
-          </span>
+          <span className="font-semibold text-slate-800">{d.nome}</span>
         </div>
       ),
     },
@@ -81,44 +61,20 @@ export default function DepartamentoTable({
     {
       key: "sigla",
       title: "Sigla",
-      render: (d) => (
-        <span className="font-medium">
-          {d.sigla}
-        </span>
-      ),
+      render: (d) => <span className="font-medium">{d.sigla}</span>,
     },
-
     {
       key: "descricao",
       title: "Descrição",
-      render: (d) => (
-        <span className="block max-w-xs truncate text-slate-500">
-          {d.descricao}
-        </span>
-      ),
+      cellClassName: "max-w-xl",
+      render: (d) => <span className="block max-w-xl text-slate-500">{d.descricao}</span>,
     },
-
     {
       key: "ativo",
       title: "Status",
-      render: (d) => (
-        <StatusBadge active={d.ativo} />
-      ),
-    },
-
-    {
-      key: "criadoEm",
-      title: "Criado em",
-      render: (d) => formatDate(d.criadoEm),
-    },
-
-    {
-      key: "atualizadoEm",
-      title: "Atualizado em",
-      render: (d) => formatDate(d.atualizadoEm),
+      render: (d) => <StatusBadge active={d.ativo} />,
     },
   ];
-
 
   const actions: TableAction<Departamento>[] = [
     {
@@ -148,7 +104,6 @@ export default function DepartamentoTable({
     },
   ];
 
-
   const filters: TableFilter[] = [
     {
       key: "ativo",
@@ -168,25 +123,19 @@ export default function DepartamentoTable({
     },
   ];
 
-
   return (
     <div className="animate-fade-up">
-
       <TableToolbar
         search={query}
         searchPlaceholder="Buscar por nome ou sigla..."
         onSearchChangeAction={setQuery}
         filters={filters}
-        hasFilters={
-          query !== "" ||
-          status !== "all"
-        }
+        hasFilters={query !== "" || status !== "all"}
         onClearFiltersAction={() => {
           setQuery("");
           setStatus("all");
         }}
       />
-
 
       <DataTable
         data={filtered}
@@ -196,14 +145,6 @@ export default function DepartamentoTable({
         emptyTitle="Nenhum departamento encontrado"
         emptyDescription="Não existem departamentos cadastrados."
       />
-
     </div>
   );
-}
-
-
-function formatDate(date: string) {
-  const [year, month, day] = date.split("-");
-
-  return `${day}/${month}/${year}`;
 }
