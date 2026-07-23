@@ -45,3 +45,11 @@ export async function updateDepartment(
   const response = await api.put(`/departments/${id}`, data);
   return response.data;
 }
+
+export async function activateDepartment(id: number): Promise<void> {
+  await api.patch(`/departments/${id}/activate`);
+}
+
+export async function deactivateDepartment(id: number): Promise<void> {
+  await api.patch(`/departments/${id}/deactivate`);
+}
