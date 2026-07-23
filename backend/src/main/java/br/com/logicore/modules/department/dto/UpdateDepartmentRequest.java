@@ -1,5 +1,6 @@
 package br.com.logicore.modules.department.dto;
 
+import br.com.logicore.modules.department.enums.DepartmentStatus;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.Data;
@@ -17,5 +18,5 @@ public class UpdateDepartmentRequest {
     @Size(max = 20, message = "The abbreviation cannot exceed 20 characters.")
     private String sigla;
 
-    private Boolean ativo;
+    private DepartmentStatus status;
 }

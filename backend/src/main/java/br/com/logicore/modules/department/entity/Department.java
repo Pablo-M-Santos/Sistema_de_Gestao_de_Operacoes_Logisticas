@@ -1,5 +1,6 @@
 package br.com.logicore.modules.department.entity;
 
+import br.com.logicore.modules.department.enums.DepartmentStatus;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -25,15 +26,16 @@ public class Department {
     @Column(length = 500)
     private String descricao;
 
-    @Column(length = 20)
+    @Column(nullable = false, length = 20)
     private String sigla;
 
     @Builder.Default
-    @Column(nullable = false)
-    private Boolean ativo = true;
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false, length = 20)
+    private DepartmentStatus status = DepartmentStatus.ACTIVE;
 
     @CreationTimestamp
-    @Column(name = "criado_em", updatable = false)
+    @Column(name = "criado_em", updatable = false, nullable = false)
     private LocalDateTime criadoEm;
 
     @UpdateTimestamp

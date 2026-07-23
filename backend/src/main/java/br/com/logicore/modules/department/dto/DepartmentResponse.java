@@ -1,5 +1,6 @@
 package br.com.logicore.modules.department.dto;
 
+import br.com.logicore.modules.department.enums.DepartmentStatus;
 import lombok.Builder;
 import lombok.Data;
 
@@ -12,7 +13,7 @@ public class DepartmentResponse {
     private String nome;
     private String descricao;
     private String sigla;
-    private Boolean ativo;
+    private DepartmentStatus status;
     private LocalDateTime criadoEm;
     private LocalDateTime atualizadoEm;
 }
