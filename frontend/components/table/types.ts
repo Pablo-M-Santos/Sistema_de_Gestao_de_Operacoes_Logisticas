@@ -46,3 +46,19 @@ export interface TableFilter {
 
   onChange: (value: string) => void;
 }
+
+export type TablePagination = {
+  page: number;
+  size: number;
+  totalElements: number;
+  totalPages: number;
+};
+
+
+export type TablePaginationProps = {
+  pagination: TablePagination;
+
+  onPageChangeAction: (page: number) => void;
+
+  onSizeChangeAction?: (size: number) => void;
+};
