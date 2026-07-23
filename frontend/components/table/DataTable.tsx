@@ -25,16 +25,11 @@ export default function DataTable<T>({
   emptyDescription,
 }: DataTableProps<T>) {
   if (!data.length) {
-    return (
-      <EmptyState
-        title={emptyTitle}
-        description={emptyDescription}
-      />
-    );
+    return <EmptyState title={emptyTitle} description={emptyDescription} />;
   }
 
   return (
-    <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
+    <div className="overflow-hidden">
       <div className="overflow-x-auto">
         <table className="w-full min-w-[900px]">
           <thead>
@@ -46,7 +41,7 @@ export default function DataTable<T>({
                     width: column.width,
                   }}
                   className={[
-                    "px-5 py-3 text-xs font-semibold uppercase text-slate-400",
+                    "px-5 py-3 text-xs font-semibold text-slate-400 uppercase",
                     column.headerClassName ?? "",
                   ].join(" ")}
                 >
@@ -55,7 +50,7 @@ export default function DataTable<T>({
               ))}
 
               {actions.length > 0 && (
-                <th className="px-5 py-3 text-right text-xs font-semibold uppercase text-slate-400">
+                <th className="px-5 py-3 text-right text-xs font-semibold text-slate-400 uppercase">
                   Ações
                 </th>
               )}
@@ -76,18 +71,13 @@ export default function DataTable<T>({
                       column.cellClassName ?? "",
                     ].join(" ")}
                   >
-                    {column.render
-                      ? column.render(row)
-                      : String(row[column.key as keyof T] ?? "")}
+                    {column.render ? column.render(row) : String(row[column.key as keyof T] ?? "")}
                   </td>
                 ))}
 
                 {actions.length > 0 && (
                   <td className="px-5 py-4 text-right">
-                    <TableActions
-                      row={row}
-                      actions={actions}
-                    />
+                    <TableActions row={row} actions={actions} />
                   </td>
                 )}
               </tr>
