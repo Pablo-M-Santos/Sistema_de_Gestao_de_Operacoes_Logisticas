@@ -14,6 +14,7 @@ import { Departamento } from "@/types/departamento";
 import { useDepartmentSummary } from "@/hooks/departments/useDepartmentSummary";
 import { useDepartments } from "@/hooks/departments/useDepartments";
 import { useUpdateDepartment } from "@/hooks/departments/useUpdateDepartment";
+import { useToggleDepartmentStatus } from "@/hooks/departments/useToggleDepartmentStatus";
 
 import DepartamentoFormModal, {
   DepartamentoFormData,
@@ -23,7 +24,11 @@ import DepartamentoConfirmModal from "@/components/departments/DepartamentoConfi
 import { useCreateDepartment } from "@/hooks/departments/useCreateDepartment";
 
 export default function DepartmentsPage() {
-  const { data: summary, loading } = useDepartmentSummary();
+  const {
+    data: summary,
+    loading: summaryLoading,
+    refresh: refreshSummary,
+  } = useDepartmentSummary();
 
   const [page, setPage] = useState(0);
 
@@ -54,6 +59,8 @@ export default function DepartmentsPage() {
   const { create, loading: isCreating } = useCreateDepartment();
   const { update, loading: isUpdating } = useUpdateDepartment();
 
+  const { toggleStatus, loading: isToggling } = useToggleDepartmentStatus();
+
   const isSaving = isCreating || isUpdating;
 
   function openNew() {
@@ -78,20 +85,24 @@ export default function DepartmentsPage() {
     setConfirmAction(departamento.status === "ACTIVE" ? "deactivate" : "activate");
   }
 
-  function handleConfirmToggle() {
-    if (!confirming) {
-      return;
+  async function handleConfirmToggle() {
+    if (!confirming) return;
+
+    try {
+      await toggleStatus(confirming.id, confirmAction);
+
+      setConfirming(null);
+
+      await Promise.all([
+        refreshDepartments(),
+        refreshSummary ? refreshSummary() : Promise.resolve(),
+      ]);
+
+      setSaved(true);
+      setTimeout(() => setSaved(false), 3500);
+    } catch (error) {
+      console.error("Erro ao alterar status do departamento:", error);
     }
-
-    console.log("Alterando status:", confirming);
-
-    setConfirming(null);
-
-    setSaved(true);
-
-    setTimeout(() => {
-      setSaved(false);
-    }, 3500);
   }
 
   async function handleSave(data: DepartamentoFormData) {
@@ -113,7 +124,10 @@ export default function DepartmentsPage() {
       setModalOpen(false);
       setEditing(null);
 
-      await refreshDepartments();
+      await Promise.all([
+        refreshDepartments(),
+        refreshSummary ? refreshSummary() : Promise.resolve(),
+      ]);
 
       setSaved(true);
       setTimeout(() => {
@@ -148,21 +162,21 @@ export default function DepartmentsPage() {
         <StatCard
           icon={Building2}
           label="Total de departamentos"
-          value={loading ? "..." : (summary?.total ?? 0)}
+          value={summaryLoading ? "..." : (summary?.total ?? 0)}
           accent="blue"
         />
 
         <StatCard
           icon={CheckCircle2}
           label="Departamentos ativos"
-          value={loading ? "..." : (summary?.active ?? 0)}
+          value={summaryLoading ? "..." : (summary?.active ?? 0)}
           accent="brand"
         />
 
         <StatCard
           icon={XCircle}
           label="Departamentos inativos"
-          value={loading ? "..." : (summary?.inactive ?? 0)}
+          value={summaryLoading ? "..." : (summary?.inactive ?? 0)}
           accent="rose"
         />
       </div>
@@ -201,6 +215,7 @@ export default function DepartmentsPage() {
         open={!!confirming}
         departamento={confirming}
         action={confirmAction}
+        loading={isToggling}
         onCloseAction={() => setConfirming(null)}
         onConfirmAction={handleConfirmToggle}
       />
