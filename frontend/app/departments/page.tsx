@@ -13,10 +13,14 @@ import DepartamentoTable from "@/components/departments/DepartamentoTable";
 import { Departamento } from "@/types/departamento";
 import { useDepartmentSummary } from "@/hooks/departments/useDepartmentSummary";
 import { useDepartments } from "@/hooks/departments/useDepartments";
+import { useUpdateDepartment } from "@/hooks/departments/useUpdateDepartment";
 
-import DepartamentoFormModal from "@/components/departments/DepartamentoFormModal";
+import DepartamentoFormModal, {
+  DepartamentoFormData,
+} from "@/components/departments/DepartamentoFormModal";
 import DepartamentoDetalheModal from "@/components/departments/DepartamentoDetalheModal";
 import DepartamentoConfirmModal from "@/components/departments/DepartamentoConfirmModal";
+import { useCreateDepartment } from "@/hooks/departments/useCreateDepartment";
 
 export default function DepartmentsPage() {
   const { data: summary, loading } = useDepartmentSummary();
@@ -27,9 +31,15 @@ export default function DepartmentsPage() {
 
   const [status, setStatus] = useState("ALL");
 
-  const { departments, pagination } = useDepartments(page, search, status);
+  const {
+    departments,
+    pagination,
+    refresh: refreshDepartments,
+  } = useDepartments(page, search, status);
 
   const [modalOpen, setModalOpen] = useState(false);
+
+  const [refresh, setRefresh] = useState(0);
 
   const [editing, setEditing] = useState<Departamento | null>(null);
 
@@ -40,6 +50,11 @@ export default function DepartmentsPage() {
   const [confirmAction, setConfirmAction] = useState<"activate" | "deactivate">("deactivate");
 
   const [saved, setSaved] = useState(false);
+
+  const { create, loading: isCreating } = useCreateDepartment();
+  const { update, loading: isUpdating } = useUpdateDepartment();
+
+  const isSaving = isCreating || isUpdating;
 
   function openNew() {
     setEditing(null);
@@ -79,18 +94,35 @@ export default function DepartmentsPage() {
     }, 3500);
   }
 
-  function handleSave(data: any) {
-    console.log("Salvar departamento:", data);
+  async function handleSave(data: DepartamentoFormData) {
+    try {
+      if (editing) {
+        await update(editing.id, {
+          nome: data.nome,
+          sigla: data.sigla,
+          descricao: data.descricao,
+        });
+      } else {
+        await create({
+          nome: data.nome,
+          sigla: data.sigla,
+          descricao: data.descricao,
+        });
+      }
 
-    setModalOpen(false);
+      setModalOpen(false);
+      setEditing(null);
 
-    setSaved(true);
+      await refreshDepartments();
 
-    setTimeout(() => {
-      setSaved(false);
-    }, 3500);
+      setSaved(true);
+      setTimeout(() => {
+        setSaved(false);
+      }, 3500);
+    } catch (error) {
+      console.error("Erro ao salvar departamento", error);
+    }
   }
-
   return (
     <AppLayout>
       <PageHeader
@@ -151,8 +183,12 @@ export default function DepartmentsPage() {
       <DepartamentoFormModal
         open={modalOpen}
         departamento={editing}
-        onCloseAction={() => setModalOpen(false)}
+        onCloseAction={() => {
+          setModalOpen(false);
+          setEditing(null);
+        }}
         onSaveAction={handleSave}
+        loading={isSaving}
       />
 
       <DepartamentoDetalheModal
