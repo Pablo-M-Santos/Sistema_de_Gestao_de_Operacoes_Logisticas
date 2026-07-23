@@ -10,10 +10,12 @@ import br.com.logicore.modules.department.entity.Department;
 import br.com.logicore.modules.department.enums.DepartmentStatus;
 import br.com.logicore.modules.department.mapper.DepartmentMapper;
 import br.com.logicore.modules.department.repository.DepartmentRepository;
+import br.com.logicore.modules.department.repository.spec.DepartmentSpecifications;
 import br.com.logicore.modules.department.validator.DepartmentValidator;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,9 +41,15 @@ public class DepartmentService {
         return mapper.toResponse(repository.save(department));
     }
 
-    public PageResponse<DepartmentResponse> findAll(Pageable pageable) {
+    @Transactional(readOnly = true)
+    public PageResponse<DepartmentResponse> findAll(String search, String statusFilter, Pageable pageable) {
+        DepartmentStatus status = parseStatus(statusFilter);
 
-        Page<DepartmentResponse> page = repository.findAllByOrderByIdAsc(pageable)
+        Specification<Department> spec = Specification
+                .where(DepartmentSpecifications.withSearch(search))
+                .and(DepartmentSpecifications.withStatus(status));
+
+        Page<DepartmentResponse> page = repository.findAll(spec, pageable)
                 .map(mapper::toResponse);
 
         return new PageResponse<>(page);
@@ -102,5 +110,16 @@ public class DepartmentService {
 
     private Department findDepartmentById(Long id) {
         return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Department not found with ID: " + id));
+    }
+
+    private DepartmentStatus parseStatus(String status) {
+        if (status == null || status.isBlank() || "ALL".equalsIgnoreCase(status)) {
+            return null;
+        }
+        try {
+            return DepartmentStatus.valueOf(status.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            return null;
+        }
     }
 }
