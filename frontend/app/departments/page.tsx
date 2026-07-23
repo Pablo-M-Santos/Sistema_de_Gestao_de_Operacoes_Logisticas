@@ -9,10 +9,9 @@ import AppLayout from "@/components/layout/AppLayout";
 import PageHeader from "@/components/ui/PageHeader";
 import StatCard from "@/components/ui/StatCard";
 
-
-
-import { departamentos, type Departamento } from "@/data/navigation";
 import DepartamentoTable from "@/components/departments/DepartamentoTable";
+import { Departamento } from "@/types/departamento";
+import { departamentos } from "@/data/departamento";
 
 export default function DepartmentsPage() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -84,15 +83,7 @@ export default function DepartmentsPage() {
         }}
       />
 
-      <div
-        className="
-grid
-grid-cols-1
-sm:grid-cols-3
-gap-4
-mb-6
-"
-      >
+      <div className="mb-6 grid grid-cols-1 gap-4 sm:grid-cols-3">
         <StatCard
           icon={Building2}
           label="Total de departamentos"
@@ -116,63 +107,22 @@ mb-6
       </div>
 
       <DepartamentoTable
-        onNew={openNew}
-        onView={openView}
-        onEdit={openEdit}
-        onToggle={handleToggle}
+        onNewAction={openNew}
+        onViewAction={openView}
+        onEditAction={openEdit}
+        onToggleAction={handleToggle}
       />
 
       {saved && (
-        <div
-          className="
-fixed
-bottom-6
-right-6
-z-50
-flex
-items-center
-gap-3
-px-4
-py-3
-rounded-xl
-bg-slate-900
-text-white
-shadow-xl
-animate-fade-up
-"
-        >
-          <div
-            className="
-grid
-place-items-center
-w-6
-h-6
-rounded-full
-bg-emerald-500
-font-bold
-"
-          >
+        <div className="animate-fade-up fixed right-6 bottom-6 z-50 flex items-center gap-3 rounded-xl bg-slate-900 px-4 py-3 text-white shadow-xl">
+          <div className="grid h-6 w-6 place-items-center rounded-full bg-emerald-500 font-bold">
             ✓
           </div>
 
           <div>
-            <p
-              className="
-text-sm
-font-semibold
-"
-            >
-              Departamento salvo
-            </p>
+            <p className="text-sm font-semibold">Departamento salvo</p>
 
-            <p
-              className="
-text-xs
-text-slate-400
-"
-            >
-              O registro foi atualizado com sucesso.
-            </p>
+            <p className="text-xs text-slate-400">O registro foi atualizado com sucesso.</p>
           </div>
         </div>
       )}
