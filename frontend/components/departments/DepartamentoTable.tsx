@@ -103,14 +103,14 @@ export default function DepartamentoTable({
       label: "Inativar",
       icon: Power,
       onClick: onToggleAction,
-      hidden: (d) => d.status !== "INACTIVE",
+      hidden: (d) => d.status === "INACTIVE",
     },
 
     {
       label: "Ativar",
       icon: Power,
       onClick: onToggleAction,
-      hidden: (d) => d.status !== "ACTIVE",
+      hidden: (d) => d.status === "ACTIVE",
     },
   ];
 

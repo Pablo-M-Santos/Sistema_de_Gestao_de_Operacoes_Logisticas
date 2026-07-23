@@ -8,13 +8,10 @@ type ActionType = "activate" | "deactivate";
 
 type Props = {
   open: boolean;
-
   departamento: Departamento | null;
-
   action: ActionType;
-
+  loading?: boolean;
   onCloseAction: () => void;
-
   onConfirmAction: () => void;
 };
 
@@ -22,6 +19,7 @@ export default function DepartamentoConfirmModal({
   open,
   departamento,
   action,
+  loading = false,
   onCloseAction,
   onConfirmAction,
 }: Props) {
@@ -42,8 +40,9 @@ export default function DepartamentoConfirmModal({
           <p className="mt-2 text-sm text-slate-500">{config.description}</p>
         </>
       }
-      confirmLabel={config.confirmLabel}
+      confirmLabel={loading ? "Aguarde..." : config.confirmLabel}
       danger={config.danger}
+      loading={loading}
       onConfirmAction={onConfirmAction}
       onCancelAction={onCloseAction}
     />
