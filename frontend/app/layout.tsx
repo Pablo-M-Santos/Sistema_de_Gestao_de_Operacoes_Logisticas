@@ -29,9 +29,7 @@ interface RootLayoutProps {
 export default function RootLayout({ children }: Readonly<RootLayoutProps>) {
   return (
     <html lang="pt-BR">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-slate-100`}
-      >
+      <body className={`${geistSans.variable} ${geistMono.variable} bg-slate-100 antialiased`}>
         <SidebarProvider>{children}</SidebarProvider>
       </body>
     </html>
