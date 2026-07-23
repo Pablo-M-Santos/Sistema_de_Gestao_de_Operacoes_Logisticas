@@ -1,18 +1,19 @@
 package br.com.logicore.modules.department.service;
 
+import br.com.logicore.common.dto.PageResponse;
+import br.com.logicore.common.exception.ResourceNotFoundException;
 import br.com.logicore.modules.department.dto.CreateDepartmentRequest;
 import br.com.logicore.modules.department.dto.DepartmentResponse;
+import br.com.logicore.modules.department.dto.DepartmentSummaryResponse;
 import br.com.logicore.modules.department.dto.UpdateDepartmentRequest;
 import br.com.logicore.modules.department.entity.Department;
+import br.com.logicore.modules.department.enums.DepartmentStatus;
 import br.com.logicore.modules.department.mapper.DepartmentMapper;
 import br.com.logicore.modules.department.repository.DepartmentRepository;
-import br.com.logicore.modules.department.specification.DepartmentSpecification;
 import br.com.logicore.modules.department.validator.DepartmentValidator;
-
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -32,48 +33,74 @@ public class DepartmentService {
     @Transactional
     public DepartmentResponse create(CreateDepartmentRequest request) {
         validator.validateUniqueName(request.getNome());
+
         Department department = mapper.toEntity(request);
+
         return mapper.toResponse(repository.save(department));
     }
 
-    @Transactional(readOnly = true)
-    public Page<DepartmentResponse> findAll(Pageable pageable, String name, Boolean active) {
-        Specification<Department> specification = DepartmentSpecification.withFilters(name, active);
+    public PageResponse<DepartmentResponse> findAll(Pageable pageable) {
 
-        return repository.findAll(specification, pageable)
+        Page<DepartmentResponse> page = repository.findAll(pageable)
                 .map(mapper::toResponse);
+
+        return new PageResponse<>(page);
+    }
+
+    @Transactional(readOnly = true)
+    public DepartmentSummaryResponse summary() {
+
+        long total = repository.count();
+
+        long active = repository.countByStatus(
+                DepartmentStatus.ACTIVE
+        );
+
+        long inactive = repository.countByStatus(
+                DepartmentStatus.INACTIVE
+        );
+
+        return DepartmentSummaryResponse.builder()
+                .total(total)
+                .active(active)
+                .inactive(inactive)
+                .build();
     }
 
     @Transactional(readOnly = true)
     public DepartmentResponse findById(Long id) {
-        Department department = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Department not found with the ID: " + id));
-        return mapper.toResponse(department);
+        return mapper.toResponse(findDepartmentById(id));
     }
 
     @Transactional
     public DepartmentResponse update(Long id, UpdateDepartmentRequest request) {
-        Department department = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Department not found with the ID: " + id));
+
+        Department department = findDepartmentById(id);
 
         validator.validateUniqueNameForUpdate(request.getNome(), id);
 
         department.setNome(request.getNome());
         department.setDescricao(request.getDescricao());
         department.setSigla(request.getSigla());
-        if (request.getAtivo() != null) {
-            department.setAtivo(request.getAtivo());
-        }
 
         return mapper.toResponse(repository.save(department));
     }
 
     @Transactional
-    public void delete(Long id) {
-        Department department = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Department not found with the ID: " + id));
+    public void activate(Long id) {
+        Department department = findDepartmentById(id);
 
-        department.setAtivo(false);
-        repository.save(department);
+        department.setStatus(DepartmentStatus.ACTIVE);
+    }
+
+    @Transactional
+    public void deactivate(Long id) {
+        Department department = findDepartmentById(id);
+
+        department.setStatus(DepartmentStatus.INACTIVE);
+    }
+
+    private Department findDepartmentById(Long id) {
+        return repository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Department not found with ID: " + id));
     }
 }

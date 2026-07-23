@@ -1,7 +1,9 @@
 package br.com.logicore.modules.department.controller;
 
+import br.com.logicore.common.dto.PageResponse;
 import br.com.logicore.modules.department.dto.CreateDepartmentRequest;
 import br.com.logicore.modules.department.dto.DepartmentResponse;
+import br.com.logicore.modules.department.dto.DepartmentSummaryResponse;
 import br.com.logicore.modules.department.dto.UpdateDepartmentRequest;
 import br.com.logicore.modules.department.service.DepartmentService;
 import jakarta.validation.Valid;
@@ -22,20 +24,26 @@ public class DepartmentController {
     }
 
     @PostMapping
-    public ResponseEntity<DepartmentResponse> create(@RequestBody @Valid CreateDepartmentRequest request) {
-        return ResponseEntity.status(HttpStatus.CREATED).body(service.create(request));
+    public ResponseEntity<DepartmentResponse> create(
+            @RequestBody @Valid CreateDepartmentRequest request) {
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(service.create(request));
     }
 
     @GetMapping
-    public ResponseEntity<Page<DepartmentResponse>> getAll(
-            Pageable pageable,
-            @RequestParam(required = false) String name,
-            @RequestParam(required = false) Boolean active) {
-        return ResponseEntity.ok(service.findAll(pageable, name, active));
+    public ResponseEntity<PageResponse<DepartmentResponse>> findAll(Pageable pageable) {
+        return ResponseEntity.ok(service.findAll(pageable));
+    }
+
+    @GetMapping("/summary")
+    public ResponseEntity<DepartmentSummaryResponse> summary() {
+        return ResponseEntity.ok(service.summary());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<DepartmentResponse> getById(@PathVariable Long id) {
+    public ResponseEntity<DepartmentResponse> findById(@PathVariable Long id) {
         return ResponseEntity.ok(service.findById(id));
     }
 
@@ -43,12 +51,19 @@ public class DepartmentController {
     public ResponseEntity<DepartmentResponse> update(
             @PathVariable Long id,
             @RequestBody @Valid UpdateDepartmentRequest request) {
+
         return ResponseEntity.ok(service.update(id, request));
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
-        service.delete(id);
+    @PatchMapping("/{id}/activate")
+    public ResponseEntity<Void> activate(@PathVariable Long id) {
+        service.activate(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @PatchMapping("/{id}/deactivate")
+    public ResponseEntity<Void> deactivate(@PathVariable Long id) {
+        service.deactivate(id);
         return ResponseEntity.noContent().build();
     }
 }
