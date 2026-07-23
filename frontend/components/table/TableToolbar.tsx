@@ -48,7 +48,7 @@ export default function TableToolbar({
                 onChange={(e) => filter.onChange(e.target.value)}
                 className="h-11 appearance-none rounded-xl border border-slate-200 bg-white pr-10 pl-4 text-sm font-medium text-slate-600 transition outline-none hover:border-slate-300 focus:border-emerald-400"
               >
-                <option value="all">{filter.label}</option>
+                <option value={filter.defaultValue ?? "all"}>{filter.label}</option>
 
                 {filter.options.map((option) => (
                   <option key={option.value} value={option.value}>

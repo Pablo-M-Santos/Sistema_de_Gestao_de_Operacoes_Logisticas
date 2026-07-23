@@ -65,7 +65,7 @@ export default function DataTable<T>({
               ))}
 
               {actions.length > 0 && (
-                <th className="px-5 py-3 text-right text-xs font-semibold text-slate-400 uppercase">
+                <th className="w-24 px-5 py-3 text-center text-xs font-semibold text-slate-400 uppercase">
                   Ações
                 </th>
               )}
@@ -91,8 +91,10 @@ export default function DataTable<T>({
                 ))}
 
                 {actions.length > 0 && (
-                  <td className="px-5 py-4 text-right">
-                    <TableActions row={row} actions={actions} />
+                  <td className="w-24 px-5 py-4">
+                    <div className="flex justify-center">
+                      <TableActions row={row} actions={actions} />
+                    </div>
                   </td>
                 )}
               </tr>
