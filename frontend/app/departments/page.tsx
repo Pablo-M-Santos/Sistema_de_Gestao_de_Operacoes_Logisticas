@@ -7,7 +7,7 @@ import { Network, Plus, Building2, CheckCircle2, XCircle } from "lucide-react";
 import AppLayout from "@/components/layout/AppLayout";
 
 import PageHeader from "@/components/ui/PageHeader";
-import StatCard from "@/components/ui/StatCard";
+import StatCard from "@/components/cards/StatCard";
 
 import DepartamentoTable from "@/components/departments/DepartamentoTable";
 import { Departamento } from "@/types/departamento";
@@ -22,7 +22,7 @@ export default function DepartmentsPage() {
 
   const [saved, setSaved] = useState(false);
 
-  const activeCount = departamentos.filter((d) => d.status === "active").length;
+  const activeCount = departamentos.filter((d) => d.ativo === true).length;
 
   const inactiveCount = departamentos.length - activeCount;
 
