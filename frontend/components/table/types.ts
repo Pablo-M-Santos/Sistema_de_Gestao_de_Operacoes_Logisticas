@@ -35,17 +35,17 @@ export interface FilterOption {
   value: string;
 }
 
-export interface TableFilter {
+export type TableFilter = {
   key: string;
-
   label: string;
-
   value: string;
-
-  options: FilterOption[];
-
+  defaultValue?: string;
   onChange: (value: string) => void;
-}
+  options: {
+    label: string;
+    value: string;
+  }[];
+};
 
 export type TablePagination = {
   page: number;
@@ -53,7 +53,6 @@ export type TablePagination = {
   totalElements: number;
   totalPages: number;
 };
-
 
 export type TablePaginationProps = {
   pagination: TablePagination;
