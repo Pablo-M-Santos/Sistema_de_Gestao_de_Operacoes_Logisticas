@@ -22,7 +22,7 @@ public class DepartmentMapper {
                 .nome(entity.getNome())
                 .descricao(entity.getDescricao())
                 .sigla(entity.getSigla())
-                .ativo(entity.getAtivo())
+                .status(entity.getStatus())
                 .criadoEm(entity.getCriadoEm())
                 .atualizadoEm(entity.getAtualizadoEm())
                 .build();

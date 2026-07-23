@@ -1,5 +1,6 @@
 package br.com.logicore.modules.department.validator;
 
+import br.com.logicore.common.exception.DuplicateResourceException;
 import br.com.logicore.modules.department.repository.DepartmentRepository;
 import org.springframework.stereotype.Component;
 
@@ -13,14 +14,18 @@ public class DepartmentValidator {
     }
 
     public void validateUniqueName(String nome) {
-        if (repository.existsByNome(nome)) {
-            throw new IllegalArgumentException("A department with this name is already registered.");
+        if (repository.existsByNomeIgnoreCase(nome)) {
+            throw new DuplicateResourceException(
+                    "A department with this name is already registered."
+            );
         }
     }
 
     public void validateUniqueNameForUpdate(String nome, Long id) {
-        if (repository.existsByNomeAndIdNot(nome, id)) {
-            throw new IllegalArgumentException("Another department is already using this name.");
+        if (repository.existsByNomeIgnoreCaseAndIdNot(nome, id)) {
+            throw new DuplicateResourceException(
+                    "Another department is already using this name."
+            );
         }
     }
 }
