@@ -6,12 +6,16 @@ import { Network, Plus, Building2, CheckCircle2, XCircle } from "lucide-react";
 
 import AppLayout from "@/components/layout/AppLayout";
 
-import PageHeader from "@/components/ui/PageHeader";
+import PageHeader from "@/components/header/PageHeader";
 import StatCard from "@/components/cards/StatCard";
 
 import DepartamentoTable from "@/components/departments/DepartamentoTable";
 import { Departamento } from "@/types/departamento";
 import { departamentos } from "@/data/departamento";
+
+import DepartamentoFormModal from "@/components/departments/DepartamentoFormModal";
+import DepartamentoDetalheModal from "@/components/departments/DepartamentoDetalheModal";
+import DepartamentoConfirmModal from "@/components/departments/DepartamentoConfirmModal";
 
 export default function DepartmentsPage() {
   const [modalOpen, setModalOpen] = useState(false);
@@ -19,6 +23,10 @@ export default function DepartmentsPage() {
   const [editing, setEditing] = useState<Departamento | null>(null);
 
   const [viewing, setViewing] = useState<Departamento | null>(null);
+
+  const [confirming, setConfirming] = useState<Departamento | null>(null);
+
+  const [confirmAction, setConfirmAction] = useState<"activate" | "deactivate">("deactivate");
 
   const [saved, setSaved] = useState(false);
 
@@ -43,7 +51,19 @@ export default function DepartmentsPage() {
   }
 
   function handleToggle(departamento: Departamento) {
-    console.log("Alterar status:", departamento);
+    setConfirming(departamento);
+
+    setConfirmAction(departamento.ativo ? "deactivate" : "activate");
+  }
+
+  function handleConfirmToggle() {
+    if (!confirming) {
+      return;
+    }
+
+    console.log("Alterando status:", confirming);
+
+    setConfirming(null);
 
     setSaved(true);
 
@@ -52,7 +72,9 @@ export default function DepartmentsPage() {
     }, 3500);
   }
 
-  function handleSave() {
+  function handleSave(data: any) {
+    console.log("Salvar departamento:", data);
+
     setModalOpen(false);
 
     setSaved(true);
@@ -113,6 +135,26 @@ export default function DepartmentsPage() {
         onToggleAction={handleToggle}
       />
 
+      <DepartamentoFormModal
+        open={modalOpen}
+        departamento={editing}
+        onCloseAction={() => setModalOpen(false)}
+        onSaveAction={handleSave}
+      />
+
+      <DepartamentoDetalheModal
+        open={!!viewing}
+        departamento={viewing}
+        onCloseAction={() => setViewing(null)}
+      />
+
+      <DepartamentoConfirmModal
+        open={!!confirming}
+        departamento={confirming}
+        action={confirmAction}
+        onCloseAction={() => setConfirming(null)}
+        onConfirmAction={handleConfirmToggle}
+      />
       {saved && (
         <div className="animate-fade-up fixed right-6 bottom-6 z-50 flex items-center gap-3 rounded-xl bg-slate-900 px-4 py-3 text-white shadow-xl">
           <div className="grid h-6 w-6 place-items-center rounded-full bg-emerald-500 font-bold">
