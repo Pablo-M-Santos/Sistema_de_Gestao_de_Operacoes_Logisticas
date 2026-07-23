@@ -11,13 +11,24 @@ import StatCard from "@/components/cards/StatCard";
 
 import DepartamentoTable from "@/components/departments/DepartamentoTable";
 import { Departamento } from "@/types/departamento";
-import { departamentos } from "@/data/departamento";
+import { useDepartmentSummary } from "@/hooks/departments/useDepartmentSummary";
+import { useDepartments } from "@/hooks/departments/useDepartments";
 
 import DepartamentoFormModal from "@/components/departments/DepartamentoFormModal";
 import DepartamentoDetalheModal from "@/components/departments/DepartamentoDetalheModal";
 import DepartamentoConfirmModal from "@/components/departments/DepartamentoConfirmModal";
 
 export default function DepartmentsPage() {
+  const { data: summary, loading } = useDepartmentSummary();
+
+  const [page, setPage] = useState(0);
+
+  const [search, setSearch] = useState("");
+
+  const [status, setStatus] = useState("ALL");
+
+  const { departments, pagination } = useDepartments(page, search, status);
+
   const [modalOpen, setModalOpen] = useState(false);
 
   const [editing, setEditing] = useState<Departamento | null>(null);
@@ -29,10 +40,6 @@ export default function DepartmentsPage() {
   const [confirmAction, setConfirmAction] = useState<"activate" | "deactivate">("deactivate");
 
   const [saved, setSaved] = useState(false);
-
-  const activeCount = departamentos.filter((d) => d.ativo === true).length;
-
-  const inactiveCount = departamentos.length - activeCount;
 
   function openNew() {
     setEditing(null);
@@ -53,7 +60,7 @@ export default function DepartmentsPage() {
   function handleToggle(departamento: Departamento) {
     setConfirming(departamento);
 
-    setConfirmAction(departamento.ativo ? "deactivate" : "activate");
+    setConfirmAction(departamento.status === "ACTIVE" ? "deactivate" : "activate");
   }
 
   function handleConfirmToggle() {
@@ -109,27 +116,33 @@ export default function DepartmentsPage() {
         <StatCard
           icon={Building2}
           label="Total de departamentos"
-          value={departamentos.length}
+          value={loading ? "..." : (summary?.total ?? 0)}
           accent="blue"
         />
 
         <StatCard
           icon={CheckCircle2}
           label="Departamentos ativos"
-          value={activeCount}
+          value={loading ? "..." : (summary?.active ?? 0)}
           accent="brand"
         />
 
         <StatCard
           icon={XCircle}
           label="Departamentos inativos"
-          value={inactiveCount}
+          value={loading ? "..." : (summary?.inactive ?? 0)}
           accent="rose"
         />
       </div>
 
       <DepartamentoTable
-        onNewAction={openNew}
+        data={departments}
+        search={search}
+        status={status}
+        onSearchChangeAction={setSearch}
+        onStatusChangeAction={setStatus}
+        pagination={pagination}
+        onPageChangeAction={setPage}
         onViewAction={openView}
         onEditAction={openEdit}
         onToggleAction={handleToggle}
