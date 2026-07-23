@@ -41,7 +41,7 @@ public class DepartmentService {
 
     public PageResponse<DepartmentResponse> findAll(Pageable pageable) {
 
-        Page<DepartmentResponse> page = repository.findAll(pageable)
+        Page<DepartmentResponse> page = repository.findAllByOrderByIdAsc(pageable)
                 .map(mapper::toResponse);
 
         return new PageResponse<>(page);
