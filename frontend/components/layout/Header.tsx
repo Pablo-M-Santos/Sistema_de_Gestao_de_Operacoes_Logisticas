@@ -3,7 +3,6 @@
 import { Menu } from "lucide-react";
 import { useSidebar } from "./SidebarProvider";
 
-
 export default function Header() {
   const { toggleSidebar } = useSidebar();
 
@@ -20,13 +19,9 @@ export default function Header() {
         </button>
 
         <div>
-          <h1 className="text-lg font-semibold text-slate-900">
-            LogiCore
-          </h1>
+          <h1 className="text-lg font-semibold text-slate-900">LogiCore</h1>
 
-          <p className="text-sm text-slate-500">
-            Sistema de Gestão Logística
-          </p>
+          <p className="text-sm text-slate-500">Sistema de Gestão Logística</p>
         </div>
       </div>
 

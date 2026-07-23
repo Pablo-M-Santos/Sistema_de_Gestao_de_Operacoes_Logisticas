@@ -1,12 +1,6 @@
 "use client";
 
-import {
-  createContext,
-  useContext,
-  useMemo,
-  useState,
-  type ReactNode,
-} from "react";
+import { createContext, useContext, useMemo, useState, type ReactNode } from "react";
 
 interface SidebarContextData {
   collapsed: boolean;
@@ -46,20 +40,14 @@ export function SidebarProvider({ children }: SidebarProviderProps) {
     [collapsed]
   );
 
-  return (
-    <SidebarContext.Provider value={value}>
-      {children}
-    </SidebarContext.Provider>
-  );
+  return <SidebarContext.Provider value={value}>{children}</SidebarContext.Provider>;
 }
 
 export function useSidebar() {
   const context = useContext(SidebarContext);
 
   if (!context) {
-    throw new Error(
-      "useSidebar deve ser utilizado dentro de um SidebarProvider."
-    );
+    throw new Error("useSidebar deve ser utilizado dentro de um SidebarProvider.");
   }
 
   return context;
