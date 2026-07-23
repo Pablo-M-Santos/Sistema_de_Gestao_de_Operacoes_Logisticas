@@ -4,7 +4,7 @@ CREATE TABLE department
     nome          VARCHAR(150)                             NOT NULL UNIQUE,
     descricao     VARCHAR(500),
     sigla         VARCHAR(20),
-    ativo         BOOLEAN                     DEFAULT TRUE NOT NULL,
+    status        VARCHAR(20) NOT NULL DEFAULT 'ACTIVE',
     criado_em     TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     atualizado_em TIMESTAMP WITHOUT TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
