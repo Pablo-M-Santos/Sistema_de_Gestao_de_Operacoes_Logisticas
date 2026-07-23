@@ -39,10 +39,11 @@ export default function DepartamentoConfirmModal({
         <>
           Tem certeza que deseja <strong>{config.text}</strong> o departamento{" "}
           <strong>{departamento.nome}</strong>?
+          <p className="mt-2 text-sm text-slate-500">{config.description}</p>
         </>
       }
       confirmLabel={config.confirmLabel}
-      danger={action === "deactivate"}
+      danger={config.danger}
       onConfirmAction={onConfirmAction}
       onCancelAction={onCloseAction}
     />
@@ -56,6 +57,8 @@ function getConfig(action: ActionType) {
         title: "Ativar departamento",
         text: "ativar",
         confirmLabel: "Ativar",
+        danger: false,
+        description: "O departamento ficará disponível novamente para utilização no sistema.",
       };
 
     case "deactivate":
@@ -63,6 +66,8 @@ function getConfig(action: ActionType) {
         title: "Inativar departamento",
         text: "inativar",
         confirmLabel: "Inativar",
+        danger: true,
+        description: "O departamento não ficará disponível para novas operações.",
       };
   }
 }
