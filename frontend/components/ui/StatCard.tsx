@@ -57,88 +57,27 @@ export default function StatCard({
 
   return (
     <div
-      className="
-bg-white
-rounded-2xl
-border
-border-slate-200
-p-5
-transition-all
-duration-300
-hover:shadow-lg
-hover:-translate-y-1
-animate-fade-up
-"
+      className="animate-fade-up rounded-2xl border border-slate-200 bg-white p-5 transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
       style={{
         animationDelay: `${index * 70}ms`,
       }}
     >
-      <div
-        className="
-flex
-items-start
-justify-between
-"
-      >
+      <div className="flex items-start justify-between">
         <div
-          className={`
-grid
-place-items-center
-w-11
-h-11
-rounded-xl
-${color.bg}
-${color.text}
-ring-1
-${color.ring}
-`}
+          className={`grid h-11 w-11 place-items-center rounded-xl ${color.bg} ${color.text} ring-1 ${color.ring} `}
         >
-          <Icon className="w-5 h-5" />
+          <Icon className="h-5 w-5" />
         </div>
       </div>
 
       <div className="mt-4">
-        <p
-          className="
-text-sm
-font-medium
-text-slate-500
-"
-        >
-          {label}
-        </p>
+        <p className="text-sm font-medium text-slate-500">{label}</p>
 
-        <div
-          className="
-flex
-items-baseline
-gap-1.5
-mt-1
-"
-        >
-          <span
-            className="
-text-3xl
-font-bold
-tracking-tight
-text-slate-900
-"
-          >
-            {value}
-          </span>
+        <div className="mt-1 flex items-baseline gap-1.5">
+          <span className="text-3xl font-bold tracking-tight text-slate-900">{value}</span>
         </div>
 
-        {hint && (
-          <p
-            className="
-text-xs
-text-slate-400
-mt-2
-"
-          >
-            {hint}
-          </p>
-        )}
+        {hint && <p className="mt-2 text-xs text-slate-400">{hint}</p>}
       </div>
     </div>
   );
