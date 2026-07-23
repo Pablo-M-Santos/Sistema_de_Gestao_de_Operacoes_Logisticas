@@ -4,8 +4,11 @@ import type { TableColumn, TableAction } from "./types";
 import TableActions from "./TableActions";
 import EmptyState from "./EmptyState";
 
+import TablePagination from "./TablePagination";
+
 type DataTableProps<T> = {
   data: T[];
+
   columns: TableColumn<T>[];
 
   actions?: TableAction<T>[];
@@ -13,7 +16,17 @@ type DataTableProps<T> = {
   getRowIdAction: (row: T) => string | number;
 
   emptyTitle?: string;
+
   emptyDescription?: string;
+
+  pagination?: {
+    page: number;
+    size: number;
+    totalElements: number;
+    totalPages: number;
+  };
+
+  onPageChangeAction?: (page: number) => void;
 };
 
 export default function DataTable<T>({
@@ -21,6 +34,8 @@ export default function DataTable<T>({
   columns,
   actions = [],
   getRowIdAction,
+  pagination,
+  onPageChangeAction,
   emptyTitle,
   emptyDescription,
 }: DataTableProps<T>) {
@@ -85,6 +100,9 @@ export default function DataTable<T>({
           </tbody>
         </table>
       </div>
+      {pagination && onPageChangeAction && (
+        <TablePagination pagination={pagination} onPageChangeAction={onPageChangeAction} />
+      )}
     </div>
   );
 }

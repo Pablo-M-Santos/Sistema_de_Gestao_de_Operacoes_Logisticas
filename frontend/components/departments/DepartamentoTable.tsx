@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Eye, Pencil, Power } from "lucide-react";
 
 import type { Departamento } from "@/types/departamento";
@@ -20,7 +20,9 @@ type Props = {
 export default function DepartamentoTable({ onViewAction, onEditAction, onToggleAction }: Props) {
   const [query, setQuery] = useState("");
   const [status, setStatus] = useState("all");
+  const [page, setPage] = useState(0);
 
+  const pageSize = 10;
   const filtered = useMemo(() => {
     return departamentos.filter((d) => {
       const search =
@@ -34,6 +36,12 @@ export default function DepartamentoTable({ onViewAction, onEditAction, onToggle
       return search && statusMatch;
     });
   }, [query, status]);
+
+  const pagedData = useMemo(() => {
+    const start = page * pageSize;
+
+    return filtered.slice(start, start + pageSize);
+  }, [filtered, page]);
 
   const columns: TableColumn<Departamento>[] = [
     {
@@ -123,6 +131,10 @@ export default function DepartamentoTable({ onViewAction, onEditAction, onToggle
     },
   ];
 
+  useEffect(() => {
+    setPage(0);
+  }, [query, status]);
+
   return (
     <div className="animate-fade-up overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm">
       <TableToolbar
@@ -140,12 +152,17 @@ export default function DepartamentoTable({ onViewAction, onEditAction, onToggle
       />
 
       <DataTable
-        data={filtered}
+        data={pagedData}
         columns={columns}
         actions={actions}
         getRowIdAction={(d) => d.id}
-        emptyTitle="Nenhum departamento encontrado"
-        emptyDescription="Não existem departamentos cadastrados."
+        pagination={{
+          page,
+          size: pageSize,
+          totalElements: filtered.length,
+          totalPages: Math.ceil(filtered.length / pageSize),
+        }}
+        onPageChangeAction={setPage}
       />
     </div>
   );
