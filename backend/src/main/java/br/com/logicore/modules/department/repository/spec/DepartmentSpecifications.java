@@ -7,8 +7,8 @@ import br.com.logicore.modules.department.entity.Department;
 import br.com.logicore.modules.department.enums.DepartmentStatus;
 import org.springframework.data.jpa.domain.Specification;
 
-public class DepartmentSpecifications {
-
+public final class DepartmentSpecifications {
+    private DepartmentSpecifications() {}
 
     public static Specification<Department> withSearch(String search) {
         return (root, query, cb) -> {

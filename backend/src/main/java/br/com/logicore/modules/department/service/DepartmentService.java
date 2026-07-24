@@ -85,7 +85,9 @@ public class DepartmentService {
 
         Department department = findDepartmentById(id);
 
-        validator.validateUniqueNameForUpdate(request.getNome(), id);
+        if (!department.getNome().equalsIgnoreCase(request.getNome())) {
+            validator.validateUniqueNameForUpdate(request.getNome(), id);
+        }
 
         department.setNome(request.getNome());
         department.setDescricao(request.getDescricao());
@@ -96,16 +98,12 @@ public class DepartmentService {
 
     @Transactional
     public void activate(Long id) {
-        Department department = findDepartmentById(id);
-
-        department.setStatus(DepartmentStatus.ACTIVE);
+        changeStatus(id, DepartmentStatus.ACTIVE);
     }
 
     @Transactional
     public void deactivate(Long id) {
-        Department department = findDepartmentById(id);
-
-        department.setStatus(DepartmentStatus.INACTIVE);
+        changeStatus(id, DepartmentStatus.INACTIVE);
     }
 
     private Department findDepartmentById(Long id) {
@@ -120,6 +118,14 @@ public class DepartmentService {
             return DepartmentStatus.valueOf(status.toUpperCase());
         } catch (IllegalArgumentException e) {
             return null;
+        }
+    }
+
+    private void changeStatus(Long id, DepartmentStatus status) {
+        Department department = findDepartmentById(id);
+
+        if (department.getStatus() != status) {
+            department.setStatus(status);
         }
     }
 }
