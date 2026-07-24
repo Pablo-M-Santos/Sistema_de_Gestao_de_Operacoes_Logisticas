@@ -20,13 +20,13 @@ public class Department {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true, length = 150)
+    @Column(nullable = false, unique = true, length = 80)
     private String nome;
 
-    @Column(length = 500)
+    @Column(length = 250)
     private String descricao;
 
-    @Column(nullable = false, length = 20)
+    @Column(nullable = false, length = 10)
     private String sigla;
 
     @Builder.Default
