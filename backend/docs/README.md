@@ -28,6 +28,11 @@ A cobertura é acompanhada utilizando o JaCoCo, que gera relatórios contendo:
 - Cobertura de classes
 - Cobertura de branches
 
+
+<img width="1206" height="643" alt="Captura de tela de 2026-07-24 16-56-19" src="https://github.com/user-attachments/assets/66350b9a-cddf-427d-9c93-b7cceae1e5f2" />
+
+---
+
 Última análise:
 
 | Módulo | Cobertura | Status |
