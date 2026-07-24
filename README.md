@@ -370,6 +370,37 @@ erDiagram
 
 ---
 
+# 🧪 Qualidade e Testes
+
+O projeto possui uma suíte de testes automatizados para garantir a qualidade das regras de negócio e dos componentes principais da aplicação.
+
+Tecnologias utilizadas:
+
+- JUnit 5
+- Mockito
+- Spring Boot Test
+- JaCoCo (análise de cobertura de testes)
+
+A cobertura dos testes é acompanhada através de relatórios gerados automaticamente pelo JaCoCo.
+
+## Status dos Testes
+
+| Módulo | Status |
+|-|-|
+| Department | ✅ 100% Coberto |
+| Cargo | 🚧 Em desenvolvimento |
+| Employee | 🚧 Em desenvolvimento |
+| Address | 🚧 Em desenvolvimento |
+
+
+📊 Documentação completa dos testes, métricas de cobertura e evidências:
+
+➡️ [Ver documentação de testes automatizados](./backend/docs/TESTES.md)
+
+---
+
+---
+
 # 📈 Evoluções Futuras
 
 - Upload de arquivos para S3
