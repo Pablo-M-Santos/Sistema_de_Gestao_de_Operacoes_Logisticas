@@ -395,7 +395,7 @@ A cobertura dos testes é acompanhada através de relatórios gerados automatica
 
 📊 Documentação completa dos testes, métricas de cobertura e evidências:
 
-➡️ [Ver documentação de testes automatizados](./backend/docs/TESTES.md)
+➡️ [Ver documentação de testes automatizados](./backend/docs/README.md)
 
 ---
 
