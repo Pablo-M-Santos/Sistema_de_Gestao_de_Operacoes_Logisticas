@@ -96,11 +96,15 @@ export default function DepartamentoFormModal({
       return;
     }
 
-    await onSaveAction({
-      nome: form.nome.trim(),
-      sigla: form.sigla.trim().toUpperCase(),
-      descricao: form.descricao.trim(),
-    });
+    try {
+      await onSaveAction({
+        nome: form.nome.trim(),
+        sigla: form.sigla.trim().toUpperCase(),
+        descricao: form.descricao.trim(),
+      });
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (

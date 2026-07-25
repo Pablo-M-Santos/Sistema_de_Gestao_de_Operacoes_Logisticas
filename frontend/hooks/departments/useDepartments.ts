@@ -16,7 +16,7 @@ export function useDepartments(page = 0, search = "", status = "ALL") {
 
   const [pagination, setPagination] = useState<Pagination>({
     page: 0,
-    size: 20,
+    size: 10,
     totalElements: 0,
     totalPages: 0,
   });
@@ -42,13 +42,19 @@ export function useDepartments(page = 0, search = "", status = "ALL") {
     }
   }
 
+
+  useEffect(() => {
+    loadDepartments(page);
+  }, [page]);
+
+
   useEffect(() => {
     const timer = setTimeout(() => {
-      loadDepartments(page);
+      loadDepartments(0);
     }, 400);
 
     return () => clearTimeout(timer);
-  }, [page, search, status]);
+  }, [search, status]);
 
   return {
     departments,

@@ -3,7 +3,7 @@
 import { useState } from "react";
 
 import { Network, Plus, Building2, CheckCircle2, XCircle } from "lucide-react";
-
+import { useToast } from "@/components/toast";
 import AppLayout from "@/components/layout/AppLayout";
 
 import PageHeader from "@/components/header/PageHeader";
@@ -44,8 +44,6 @@ export default function DepartmentsPage() {
 
   const [modalOpen, setModalOpen] = useState(false);
 
-  const [refresh, setRefresh] = useState(0);
-
   const [editing, setEditing] = useState<Departamento | null>(null);
 
   const [viewing, setViewing] = useState<Departamento | null>(null);
@@ -54,14 +52,14 @@ export default function DepartmentsPage() {
 
   const [confirmAction, setConfirmAction] = useState<"activate" | "deactivate">("deactivate");
 
-  const [saved, setSaved] = useState(false);
-
   const { create, loading: isCreating } = useCreateDepartment();
   const { update, loading: isUpdating } = useUpdateDepartment();
 
   const { toggleStatus, loading: isToggling } = useToggleDepartmentStatus();
 
   const isSaving = isCreating || isUpdating;
+
+  const toast = useToast();
 
   function openNew() {
     setEditing(null);
@@ -98,16 +96,28 @@ export default function DepartmentsPage() {
         refreshSummary ? refreshSummary() : Promise.resolve(),
       ]);
 
-      setSaved(true);
-      setTimeout(() => setSaved(false), 3500);
+      toast.success({
+        title: confirmAction === "activate" ? "Departamento ativado" : "Departamento inativado",
+        description:
+          confirmAction === "activate"
+            ? "O departamento foi ativado com sucesso."
+            : "O departamento foi inativado com sucesso.",
+      });
     } catch (error) {
       console.error("Erro ao alterar status do departamento:", error);
+
+      toast.error({
+        title: "Erro ao alterar status",
+        description: "Não foi possível alterar o status do departamento.",
+      });
     }
   }
 
   async function handleSave(data: DepartamentoFormData) {
     try {
-      if (editing) {
+      const isEditing = !!editing;
+
+      if (isEditing) {
         await update(editing.id, {
           nome: data.nome,
           sigla: data.sigla,
@@ -121,6 +131,7 @@ export default function DepartmentsPage() {
         });
       }
 
+      // fecha o modal imediatamente
       setModalOpen(false);
       setEditing(null);
 
@@ -129,12 +140,19 @@ export default function DepartmentsPage() {
         refreshSummary ? refreshSummary() : Promise.resolve(),
       ]);
 
-      setSaved(true);
-      setTimeout(() => {
-        setSaved(false);
-      }, 3500);
+      toast.success({
+        title: isEditing ? "Departamento atualizado" : "Departamento criado",
+        description: isEditing
+          ? "As alterações foram salvas com sucesso."
+          : "O departamento foi cadastrado com sucesso.",
+      });
     } catch (error) {
       console.error("Erro ao salvar departamento", error);
+
+      toast.error({
+        title: "Erro ao salvar",
+        description: "Não foi possível salvar o departamento.",
+      });
     }
   }
   return (
@@ -225,19 +243,6 @@ export default function DepartmentsPage() {
         onCloseAction={() => setConfirming(null)}
         onConfirmAction={handleConfirmToggle}
       />
-      {saved && (
-        <div className="animate-fade-up fixed right-6 bottom-6 z-50 flex items-center gap-3 rounded-xl bg-slate-900 px-4 py-3 text-white shadow-xl">
-          <div className="grid h-6 w-6 place-items-center rounded-full bg-emerald-500 font-bold">
-            ✓
-          </div>
-
-          <div>
-            <p className="text-sm font-semibold">Departamento salvo</p>
-
-            <p className="text-xs text-slate-400">O registro foi atualizado com sucesso.</p>
-          </div>
-        </div>
-      )}
     </AppLayout>
   );
 }

@@ -1,6 +1,5 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
 import { Eye, Pencil, Power } from "lucide-react";
 
 import type { Departamento } from "@/types/departamento";

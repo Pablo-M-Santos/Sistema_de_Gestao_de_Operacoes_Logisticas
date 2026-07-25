@@ -22,7 +22,7 @@ export async function getDepartments(
   const response = await api.get("/departments", {
     params: {
       page,
-      size: 20,
+      size: 10,
 
       search: search.trim() || undefined,
 
