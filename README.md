@@ -399,8 +399,6 @@ A cobertura dos testes é acompanhada através de relatórios gerados automatica
 
 ---
 
----
-
 # 📈 Evoluções Futuras
 
 - Upload de arquivos para S3
@@ -413,9 +411,3 @@ A cobertura dos testes é acompanhada através de relatórios gerados automatica
 - Testes Automatizados
 - CI/CD
 - Kubernetes
-
----
-
-# 👨‍💻 Autor
-
-Projeto desenvolvido para estudo e evolução profissional utilizando tecnologias modernas do ecossistema Java e React.
