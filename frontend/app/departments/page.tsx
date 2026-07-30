@@ -16,6 +16,9 @@ import { useDepartments } from "@/hooks/departments/useDepartments";
 import { useUpdateDepartment } from "@/hooks/departments/useUpdateDepartment";
 import { useToggleDepartmentStatus } from "@/hooks/departments/useToggleDepartmentStatus";
 
+import { useEffect } from "react";
+import { useHealth } from "@/hooks/useHealth";
+
 import DepartamentoFormModal, {
   DepartamentoFormData,
 } from "@/components/departments/DepartamentoFormModal";
@@ -35,6 +38,8 @@ export default function DepartmentsPage() {
   const [search, setSearch] = useState("");
 
   const [status, setStatus] = useState("ALL");
+
+  const { refresh: checkHealth } = useHealth();
 
   const {
     departments,
@@ -82,6 +87,23 @@ export default function DepartmentsPage() {
 
     setConfirmAction(departamento.status === "ACTIVE" ? "deactivate" : "activate");
   }
+
+  useEffect(() => {
+    async function initialize() {
+      try {
+        await checkHealth();
+      } catch (error) {
+        console.error("API indisponível", error);
+
+        toast.error({
+          title: "Servidor indisponível",
+          description: "Não foi possível conectar à API.",
+        });
+      }
+    }
+
+    initialize();
+  }, []);
 
   async function handleConfirmToggle() {
     if (!confirming) return;
