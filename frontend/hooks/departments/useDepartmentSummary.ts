@@ -20,10 +20,7 @@ export function useDepartmentSummary() {
     }
   }, []);
 
-  useEffect(() => {
-    loadSummary();
-  }, [loadSummary]);
-
+ 
   return {
     data,
     loading,

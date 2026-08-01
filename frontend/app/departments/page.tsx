@@ -92,8 +92,10 @@ export default function DepartmentsPage() {
     async function initialize() {
       try {
         await checkHealth();
+
+        await Promise.all([refreshSummary(), refreshDepartments()]);
       } catch (error) {
-        console.error("API indisponível", error);
+        console.error(error);
 
         toast.error({
           title: "Servidor indisponível",
@@ -103,7 +105,7 @@ export default function DepartmentsPage() {
     }
 
     initialize();
-  }, []);
+  }, [checkHealth, refreshSummary, refreshDepartments, toast]);
 
   async function handleConfirmToggle() {
     if (!confirming) return;
