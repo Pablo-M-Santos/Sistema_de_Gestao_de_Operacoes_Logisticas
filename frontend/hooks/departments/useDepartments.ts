@@ -41,6 +41,21 @@ export function useDepartments(page = 0, search = "", status = "ALL") {
       setLoading(false);
     }
   }
+
+
+  useEffect(() => {
+    loadDepartments(page);
+  }, [page]);
+
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      loadDepartments(0);
+    }, 400);
+
+    return () => clearTimeout(timer);
+  }, [search, status]);
+
   return {
     departments,
     pagination,
