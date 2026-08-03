@@ -21,13 +21,13 @@ public class Cargo {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false, unique = true, length = 150)
+    @Column(nullable = false, unique = true, length = 100)
     private String nome;
 
-    @Column(length = 500)
+    @Column(length = 255)
     private String descricao;
 
-    @Column(unique = true, length = 20)
+    @Column(nullable = false, unique = true, length = 20)
     private String codigo;
 
     @Builder.Default
@@ -39,7 +39,7 @@ public class Cargo {
     private LocalDateTime criadoEm;
 
     @UpdateTimestamp
-    @Column(name = "atualizado_em")
+    @Column(name = "atualizado_em", nullable = false)
     private LocalDateTime atualizadoEm;
 
 }
