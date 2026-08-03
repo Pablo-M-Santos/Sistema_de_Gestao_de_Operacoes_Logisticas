@@ -2,10 +2,12 @@ package br.com.logicore.modules.cargo.repository;
 
 import br.com.logicore.modules.cargo.entity.Cargo;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 
 import java.util.Optional;
 
-public interface CargoRepository extends JpaRepository<Cargo, Long> {
+public interface CargoRepository extends JpaRepository<Cargo, Long>,
+        JpaSpecificationExecutor<Cargo> {
 
     Optional<Cargo> findByNomeIgnoreCase(String nome);
 
@@ -14,5 +16,9 @@ public interface CargoRepository extends JpaRepository<Cargo, Long> {
     boolean existsByNomeIgnoreCase(String nome);
 
     boolean existsByCodigoIgnoreCase(String codigo);
+
+    long countByAtivoTrue();
+
+    long countByAtivoFalse();
 
 }
