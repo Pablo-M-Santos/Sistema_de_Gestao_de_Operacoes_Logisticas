@@ -1,5 +1,6 @@
 package br.com.logicore.modules.cargo.validator;
 
+import br.com.logicore.common.exception.DuplicateResourceException;
 import br.com.logicore.modules.cargo.repository.CargoRepository;
 import org.springframework.stereotype.Component;
 
@@ -15,17 +16,15 @@ public class CargoValidator {
     public void validateUniqueName(String nome) {
 
         if (repository.existsByNomeIgnoreCase(nome)) {
-            throw new RuntimeException("There is already a position with this name.");
+            throw new DuplicateResourceException("There is already a position with this name.");
         }
 
     }
 
     public void validateUniqueCode(String codigo) {
 
-        if (codigo != null && !codigo.isBlank()
-                && repository.existsByCodigoIgnoreCase(codigo)) {
-
-            throw new RuntimeException("There is already a position with this code.");
+        if (repository.existsByCodigoIgnoreCase(codigo)) {
+            throw new DuplicateResourceException("There is already a position with this code.");
         }
 
     }
@@ -35,21 +34,17 @@ public class CargoValidator {
         repository.findByNomeIgnoreCase(nome)
                 .filter(cargo -> !cargo.getId().equals(id))
                 .ifPresent(cargo -> {
-                    throw new RuntimeException("There is already a position with this name.");
+                    throw new DuplicateResourceException("There is already a position with this name.");
                 });
 
     }
 
     public void validateUniqueCodeForUpdate(String codigo, Long id) {
 
-        if (codigo == null || codigo.isBlank()) {
-            return;
-        }
-
         repository.findByCodigoIgnoreCase(codigo)
                 .filter(cargo -> !cargo.getId().equals(id))
                 .ifPresent(cargo -> {
-                    throw new RuntimeException("There is already a position with this code.");
+                    throw new DuplicateResourceException("There is already a position with this code.");
                 });
 
     }
