@@ -1,17 +1,23 @@
 package br.com.logicore.modules.cargo.service;
 
+import br.com.logicore.common.dto.PageResponse;
+import br.com.logicore.common.exception.ResourceNotFoundException;
 import br.com.logicore.modules.cargo.dto.CargoResponse;
+import br.com.logicore.modules.cargo.dto.CargoSummaryResponse;
 import br.com.logicore.modules.cargo.dto.CreateCargoRequest;
 import br.com.logicore.modules.cargo.dto.UpdateCargoRequest;
 import br.com.logicore.modules.cargo.entity.Cargo;
 import br.com.logicore.modules.cargo.mapper.CargoMapper;
 import br.com.logicore.modules.cargo.repository.CargoRepository;
+import br.com.logicore.modules.cargo.repository.spec.CargoSpecifications;
 import br.com.logicore.modules.cargo.validator.CargoValidator;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-
 @Service
 public class CargoService {
 
@@ -41,55 +47,85 @@ public class CargoService {
     }
 
     @Transactional(readOnly = true)
-    public List<CargoResponse> findAll() {
+    public PageResponse<CargoResponse> findAll(
+            String search,
+            Boolean active,
+            Pageable pageable) {
 
-        return repository.findAll()
-                .stream()
-                .map(mapper::toResponse)
-                .toList();
+        Specification<Cargo> spec = Specification
+                .where(CargoSpecifications.withSearch(search))
+                .and(CargoSpecifications.withStatus(active));
+
+        Page<CargoResponse> page = repository.findAll(spec, pageable)
+                .map(mapper::toResponse);
+
+        return new PageResponse<>(page);
+    }
+
+    @Transactional(readOnly = true)
+    public CargoSummaryResponse summary() {
+
+        long total = repository.count();
+
+        long active = repository.countByAtivoTrue();
+
+        long inactive = repository.countByAtivoFalse();
+
+        return CargoSummaryResponse.builder()
+                .total(total)
+                .active(active)
+                .inactive(inactive)
+                .build();
     }
 
     @Transactional(readOnly = true)
     public CargoResponse findById(Long id) {
-
-        Cargo cargo = repository.findById(id)
-                .orElseThrow(() ->
-                        new RuntimeException("Cargo not found with ID: " + id));
-
-        return mapper.toResponse(cargo);
+        return mapper.toResponse(findCargoById(id));
     }
 
     @Transactional
     public CargoResponse update(Long id, UpdateCargoRequest request) {
 
-        Cargo cargo = repository.findById(id)
-                .orElseThrow(() ->
-                        new RuntimeException("Cargo not found with ID: " + id));
+        Cargo cargo = findCargoById(id);
 
-        validator.validateUniqueNameForUpdate(request.getNome(), id);
-        validator.validateUniqueCodeForUpdate(request.getCodigo(), id);
+        if (!cargo.getNome().equalsIgnoreCase(request.getNome())) {
+            validator.validateUniqueNameForUpdate(request.getNome(), id);
+        }
+
+        if (!cargo.getCodigo().equalsIgnoreCase(request.getCodigo())) {
+            validator.validateUniqueCodeForUpdate(request.getCodigo(), id);
+        }
 
         cargo.setNome(request.getNome());
         cargo.setDescricao(request.getDescricao());
         cargo.setCodigo(request.getCodigo());
 
-        if (request.getAtivo() != null) {
-            cargo.setAtivo(request.getAtivo());
-        }
-
         return mapper.toResponse(repository.save(cargo));
     }
 
     @Transactional
-    public void delete(Long id) {
+    public void activate(Long id) {
+        changeStatus(id, true);
+    }
 
-        Cargo cargo = repository.findById(id)
+    @Transactional
+    public void deactivate(Long id) {
+        changeStatus(id, false);
+    }
+
+    private Cargo findCargoById(Long id) {
+        return repository.findById(id)
                 .orElseThrow(() ->
-                        new RuntimeException("Cargo not found with ID: " + id));
+                        new ResourceNotFoundException("Cargo not found with ID: " + id));
+    }
 
-        cargo.setAtivo(false);
+    private void changeStatus(Long id, boolean active) {
 
-        repository.save(cargo);
+        Cargo cargo = findCargoById(id);
+
+        if (!cargo.getAtivo().equals(active)) {
+            cargo.setAtivo(active);
+        }
     }
 
 }
