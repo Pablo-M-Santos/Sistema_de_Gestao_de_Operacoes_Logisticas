@@ -17,7 +17,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import java.util.Objects;
+
 @Service
 public class CargoService {
 
@@ -99,6 +100,10 @@ public class CargoService {
         cargo.setNome(request.getNome());
         cargo.setDescricao(request.getDescricao());
         cargo.setCodigo(request.getCodigo());
+
+        if (request.getAtivo() != null && !Objects.equals(cargo.getAtivo(), request.getAtivo())) {
+            cargo.setAtivo(request.getAtivo());
+        }
 
         return mapper.toResponse(repository.save(cargo));
     }
