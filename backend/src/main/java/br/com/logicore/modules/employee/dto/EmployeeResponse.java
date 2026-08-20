@@ -19,11 +19,30 @@ public class EmployeeResponse {
     private LocalDate dataNascimento;
     private String telefone;
     private String email;
+
+    // Cargo
     private Long cargoId;
     private String cargoNome;
+    private String cargoCodigo;
+
+    // Departamento
     private Long departamentoId;
     private String departamentoNome;
+    private String departamentoSigla;
+
+    // Endereço
     private Long enderecoId;
+    private String enderecoCep;
+    private String enderecoLogradouro;
+    private String enderecoNumero;
+    private String enderecoComplemento;
+    private String enderecoBairro;
+    private String enderecoCidade;
+    private String enderecoEstado;
+    private String enderecoPais;
+    private BigDecimal enderecoLatitude;
+    private BigDecimal enderecoLongitude;
+
     private LocalDate dataAdmissao;
     private String status;
     private LocalDateTime criadoEm;

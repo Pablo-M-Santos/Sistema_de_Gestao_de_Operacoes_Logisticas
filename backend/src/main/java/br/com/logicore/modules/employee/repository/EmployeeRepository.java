@@ -2,11 +2,13 @@ package br.com.logicore.modules.employee.repository;
 
 import br.com.logicore.modules.employee.entity.Employee;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.Optional;
 
 
-public interface EmployeeRepository extends JpaRepository<Employee, Long> {
+public interface EmployeeRepository extends JpaRepository<Employee, Long>, JpaSpecificationExecutor<Employee> {
 
 
     Optional<Employee> findByCpf(String cpf);
@@ -19,5 +21,14 @@ public interface EmployeeRepository extends JpaRepository<Employee, Long> {
 
 
     boolean existsByMatricula(String matricula);
+
+    @Query("SELECT COUNT(e) FROM Employee e WHERE e.status = 'ACTIVE'")
+    long countActive();
+
+    @Query("SELECT COUNT(e) FROM Employee e WHERE e.status = 'INACTIVE'")
+    long countInactive();
+
+    @Query("SELECT COUNT(e) FROM Employee e WHERE e.endereco IS NOT NULL")
+    long countWithAddress();
 
 }

@@ -1,5 +1,7 @@
 package br.com.logicore.modules.employee.service;
 
+import br.com.logicore.common.dto.PageResponse;
+import br.com.logicore.common.exception.ResourceNotFoundException;
 import br.com.logicore.modules.address.entity.Address;
 import br.com.logicore.modules.address.repository.AddressRepository;
 import br.com.logicore.modules.cargo.entity.Cargo;
@@ -12,7 +14,11 @@ import br.com.logicore.modules.employee.dto.UpdateEmployeeRequest;
 import br.com.logicore.modules.employee.entity.Employee;
 import br.com.logicore.modules.employee.mapper.EmployeeMapper;
 import br.com.logicore.modules.employee.repository.EmployeeRepository;
+import br.com.logicore.modules.employee.repository.spec.EmployeeSpecifications;
 import br.com.logicore.modules.employee.validator.EmployeeValidator;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -46,16 +52,19 @@ public class EmployeeService {
     public EmployeeResponse create(CreateEmployeeRequest request) {
         validator.validateUniqueCpf(request.getCpf());
         validator.validateUniqueMatricula(request.getMatricula());
+
         Cargo cargo = cargoRepository.findById(request.getCargoId())
-                .orElseThrow(() -> new RuntimeException("Cargo not found with ID: " + request.getCargoId()));
+                .orElseThrow(() -> new ResourceNotFoundException("Cargo not found with ID: " + request.getCargoId()));
+
         Department department = departmentRepository.findById(request.getDepartamentoId())
-                .orElseThrow(() -> new RuntimeException("Department not found with ID: " + request.getDepartamentoId()));
+                .orElseThrow(() -> new ResourceNotFoundException("Department not found with ID: " + request.getDepartamentoId()));
+
         Address address = null;
         if (request.getEnderecoId() != null) {
             address = addressRepository.findById(request.getEnderecoId())
-
-                    .orElseThrow(() -> new RuntimeException("Address not found with ID: " + request.getEnderecoId()));
+                    .orElseThrow(() -> new ResourceNotFoundException("Address not found with ID: " + request.getEnderecoId()));
         }
+
         Employee employee = Employee.builder()
                 .matricula(request.getMatricula())
                 .nome(request.getNome())
@@ -69,8 +78,32 @@ public class EmployeeService {
                 .endereco(address)
                 .dataAdmissao(request.getDataAdmissao())
                 .build();
+
         return mapper.toResponse(repository.save(employee));
 
+    }
+
+
+    @Transactional(readOnly = true)
+    public PageResponse<EmployeeResponse> findAll(
+            String search,
+            String nome,
+            String cpf,
+            Long cargoId,
+            Long departamentoId,
+            Pageable pageable) {
+
+        Specification<Employee> spec = Specification
+                .where(EmployeeSpecifications.withSearch(search))
+                .and(EmployeeSpecifications.withNome(nome))
+                .and(EmployeeSpecifications.withCpf(cpf))
+                .and(EmployeeSpecifications.withCargoId(cargoId))
+                .and(EmployeeSpecifications.withDepartamentoId(departamentoId));
+
+        Page<EmployeeResponse> page = repository.findAll(spec, pageable)
+                .map(mapper::toResponse);
+
+        return new PageResponse<>(page);
     }
 
 
@@ -82,18 +115,35 @@ public class EmployeeService {
                 .toList();
     }
 
+    @Transactional(readOnly = true)
+    public br.com.logicore.modules.employee.dto.EmployeeSummaryResponse summary() {
+        long total = repository.count();
+        long active = repository.countActive();
+        long inactive = repository.countInactive();
+        long withAddress = repository.countWithAddress();
+        long withoutAddress = total - withAddress;
+
+        return br.com.logicore.modules.employee.dto.EmployeeSummaryResponse.builder()
+                .total(total)
+                .active(active)
+                .inactive(inactive)
+                .withAddress(withAddress)
+                .withoutAddress(withoutAddress)
+                .build();
+    }
+
 
     @Transactional(readOnly = true)
     public EmployeeResponse findById(Long id) {
         Employee employee = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Employee not found with ID: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Employee not found with ID: " + id));
         return mapper.toResponse(employee);
     }
 
     @Transactional
     public EmployeeResponse update(Long id, UpdateEmployeeRequest request) {
         Employee employee = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Employee not found with ID: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Employee not found with ID: " + id));
 
         if (request.getCpf() != null) {
             validator.validateUniqueCpfForUpdate(request.getCpf(), id);
@@ -111,23 +161,24 @@ public class EmployeeService {
         if (request.getTelefone() != null) employee.setTelefone(request.getTelefone());
         if (request.getEmail() != null) employee.setEmail(request.getEmail());
         if (request.getDataNascimento() != null) employee.setDataNascimento(request.getDataNascimento());
+
         if (request.getCargoId() != null) {
             Cargo cargo = cargoRepository.findById(request.getCargoId())
-                    .orElseThrow(() -> new RuntimeException("Cargo not found."));
+                    .orElseThrow(() -> new ResourceNotFoundException("Cargo not found."));
             employee.setCargo(cargo);
         }
 
 
         if (request.getDepartamentoId() != null) {
             Department department = departmentRepository.findById(request.getDepartamentoId())
-                    .orElseThrow(() -> new RuntimeException("Department not found."));
+                    .orElseThrow(() -> new ResourceNotFoundException("Department not found."));
             employee.setDepartamento(department);
         }
 
 
         if (request.getEnderecoId() != null) {
             Address address = addressRepository.findById(request.getEnderecoId())
-                    .orElseThrow(() -> new RuntimeException("Address not found."));
+                    .orElseThrow(() -> new ResourceNotFoundException("Address not found."));
             employee.setEndereco(address);
         }
 
@@ -143,7 +194,7 @@ public class EmployeeService {
     public void delete(Long id) {
 
         Employee employee = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Employee not found with ID: " + id));
+                .orElseThrow(() -> new ResourceNotFoundException("Employee not found with ID: " + id));
 
         employee.setStatus("INACTIVE");
 

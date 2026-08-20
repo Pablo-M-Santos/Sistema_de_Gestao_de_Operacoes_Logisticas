@@ -1,9 +1,9 @@
 package br.com.logicore.modules.employee.validator;
 
+import br.com.logicore.common.exception.DuplicateResourceException;
 import br.com.logicore.modules.employee.repository.EmployeeRepository;
 import org.springframework.stereotype.Component;
 
-import java.math.BigDecimal;
 
 @Component
 public class EmployeeValidator {
@@ -18,7 +18,7 @@ public class EmployeeValidator {
 
     public void validateUniqueCpf(String cpf) {
         if (repository.existsByCpf(cpf)) {
-            throw new RuntimeException(
+            throw new DuplicateResourceException(
                     "There is already an employee with this CPF."
             );
 
@@ -30,7 +30,7 @@ public class EmployeeValidator {
     public void validateUniqueMatricula(String matricula) {
 
         if (repository.existsByMatricula(matricula)) {
-            throw new RuntimeException(
+            throw new DuplicateResourceException(
                     "There is already an employee with this registration number."
             );
         }
@@ -49,7 +49,7 @@ public class EmployeeValidator {
                 )
 
                 .ifPresent(employee -> {
-                    throw new RuntimeException(
+                    throw new DuplicateResourceException(
                             "There is already an employee with this CPF."
                     );
 
@@ -72,7 +72,7 @@ public class EmployeeValidator {
 
                 .ifPresent(employee -> {
 
-                    throw new RuntimeException(
+                    throw new DuplicateResourceException(
                             "There is already an employee with this registration number."
                     );
 
