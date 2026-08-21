@@ -1,6 +1,7 @@
 package br.com.logicore.modules.address.service;
 
 import br.com.logicore.common.dto.PageResponse;
+import br.com.logicore.common.exception.BusinessException;
 import br.com.logicore.common.exception.ResourceNotFoundException;
 import br.com.logicore.modules.address.dto.AddressResponse;
 import br.com.logicore.modules.address.dto.AddressSummaryResponse;
@@ -20,6 +21,7 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.dao.DataIntegrityViolationException;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -165,6 +167,21 @@ class AddressServiceTest {
         when(repository.findById(1L)).thenReturn(Optional.of(address));
 
         service.delete(1L);
+
+        verify(repository).delete(address);
+    }
+
+    @Test
+    void shouldThrowBusinessExceptionWhenDeleteReferencedAddress() {
+        Address address = Address.builder().id(1L).build();
+
+        when(repository.findById(1L)).thenReturn(Optional.of(address));
+        doThrow(new DataIntegrityViolationException("FK constraint"))
+                .when(repository).delete(address);
+
+        assertThatThrownBy(() -> service.delete(1L))
+                .isInstanceOf(BusinessException.class)
+                .hasMessage("Address cannot be deleted because it is referenced by other records.");
 
         verify(repository).delete(address);
     }

@@ -1,6 +1,7 @@
 package br.com.logicore.modules.address.service;
 
 import br.com.logicore.common.dto.PageResponse;
+import br.com.logicore.common.exception.BusinessException;
 import br.com.logicore.common.exception.ResourceNotFoundException;
 import br.com.logicore.modules.address.dto.AddressSummaryResponse;
 import br.com.logicore.modules.address.dto.AddressResponse;
@@ -14,6 +15,7 @@ import br.com.logicore.modules.address.validator.AddressValidator;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -140,7 +142,14 @@ public class AddressService {
 
         Address address = findAddressById(id);
 
-        repository.delete(address);
+        try {
+            repository.delete(address);
+            repository.flush();
+        } catch (DataIntegrityViolationException ex) {
+            throw new BusinessException(
+                    "Address cannot be deleted because it is referenced by other records."
+            );
+        }
     }
 
     private Address findAddressById(Long id) {

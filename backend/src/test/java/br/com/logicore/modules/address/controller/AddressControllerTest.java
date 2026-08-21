@@ -64,7 +64,7 @@ class AddressControllerTest {
 
         when(service.create(any(CreateAddressRequest.class))).thenReturn(response);
 
-        mockMvc.perform(post("/api/addresses")
+        mockMvc.perform(post("/api/v1/addresses")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isCreated())
@@ -116,7 +116,7 @@ class AddressControllerTest {
 
         when(service.findById(1L)).thenReturn(response);
 
-        mockMvc.perform(get("/api/addresses/1"))
+        mockMvc.perform(get("/api/v1/addresses/1"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id").value(1));
 
@@ -141,7 +141,7 @@ class AddressControllerTest {
 
         when(service.update(eq(1L), any(UpdateAddressRequest.class))).thenReturn(response);
 
-        mockMvc.perform(put("/api/addresses/1")
+        mockMvc.perform(put("/api/v1/addresses/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
                 .andExpect(status().isOk())
@@ -153,7 +153,7 @@ class AddressControllerTest {
 
     @Test
     void shouldDeleteAddress() throws Exception {
-        mockMvc.perform(delete("/api/addresses/1"))
+        mockMvc.perform(delete("/api/v1/addresses/1"))
                 .andExpect(status().isNoContent());
 
         verify(service).delete(1L);
@@ -169,7 +169,7 @@ class AddressControllerTest {
 
         when(service.summary()).thenReturn(response);
 
-        mockMvc.perform(get("/api/addresses/summary"))
+        mockMvc.perform(get("/api/v1/addresses/summary"))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.total").value(10))
                 .andExpect(jsonPath("$.withCoordinates").value(7))
