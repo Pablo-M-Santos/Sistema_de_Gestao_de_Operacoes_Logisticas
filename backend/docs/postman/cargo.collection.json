@@ -1,0 +1,214 @@
+{
+  "info": {
+    "name": "LogiCore - Cargo",
+    "description": "Postman Collection for the Cargo module of LogiCore.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080/api/v1"
+    }
+  ],
+  "item": [
+    {
+      "name": "Cargo",
+      "item": [
+        {
+          "name": "Create",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/cargos",
+              "host": ["{{baseUrl}}"],
+              "path": ["cargos"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Analyst\",\n  \"codigo\": \"ANL\",\n  \"descricao\": \"Cargo de análise\"\n}"
+            },
+            "description": "Creates a new cargo."
+          },
+          "response": [
+            {
+              "name": "Created",
+              "status": "OK",
+              "code": 201,
+              "header": [],
+              "body": "{\n  \"id\": 1,\n  \"nome\": \"Analyst\",\n  \"descricao\": \"Cargo de análise\",\n  \"codigo\": \"ANL\",\n  \"ativo\": true,\n  \"criadoEm\": \"2024-01-01T10:00:00\",\n  \"atualizadoEm\": \"2024-01-01T10:00:00\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Find All",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/cargos?search=an&active=true&page=0&size=20&sort=id,asc",
+              "host": ["{{baseUrl}}"],
+              "path": ["cargos"],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "an"
+                },
+                {
+                  "key": "active",
+                  "value": "true"
+                },
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "20"
+                },
+                {
+                  "key": "sort",
+                  "value": "id,asc"
+                }
+              ]
+            },
+            "description": "Returns a paginated list of cargos with optional search and active filters."
+          },
+          "response": [
+            {
+              "name": "OK",
+              "status": "OK",
+              "code": 200,
+              "header": [],
+              "body": "{\n  \"content\": [\n    {\n      \"id\": 1,\n      \"nome\": \"Analyst\",\n      \"descricao\": \"Cargo de análise\",\n      \"codigo\": \"ANL\",\n      \"ativo\": true,\n      \"criadoEm\": \"2024-01-01T10:00:00\",\n      \"atualizadoEm\": \"2024-01-01T10:00:00\"\n    }\n  ],\n  \"page\": 0,\n  \"size\": 20,\n  \"totalElements\": 1,\n  \"totalPages\": 1\n}"
+            }
+          ]
+        },
+        {
+          "name": "Find By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/cargos/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["cargos", "1"]
+            },
+            "description": "Returns a cargo by its identifier."
+          },
+          "response": [
+            {
+              "name": "OK",
+              "status": "OK",
+              "code": 200,
+              "header": [],
+              "body": "{\n  \"id\": 1,\n  \"nome\": \"Analyst\",\n  \"descricao\": \"Cargo de análise\",\n  \"codigo\": \"ANL\",\n  \"ativo\": true,\n  \"criadoEm\": \"2024-01-01T10:00:00\",\n  \"atualizadoEm\": \"2024-01-01T10:00:00\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/cargos/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["cargos", "1"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Analyst Updated\",\n  \"codigo\": \"ANL2\",\n  \"descricao\": \"Cargo atualizado\",\n  \"ativo\": false\n}"
+            },
+            "description": "Updates cargo information."
+          },
+          "response": [
+            {
+              "name": "OK",
+              "status": "OK",
+              "code": 200,
+              "header": [],
+              "body": "{\n  \"id\": 1,\n  \"nome\": \"Analyst Updated\",\n  \"descricao\": \"Cargo atualizado\",\n  \"codigo\": \"ANL2\",\n  \"ativo\": false,\n  \"criadoEm\": \"2024-01-01T10:00:00\",\n  \"atualizadoEm\": \"2024-01-02T10:00:00\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Activate",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/cargos/1/activate",
+              "host": ["{{baseUrl}}"],
+              "path": ["cargos", "1", "activate"]
+            },
+            "description": "Changes the cargo status to active."
+          },
+          "response": [
+            {
+              "name": "No Content",
+              "status": "OK",
+              "code": 204,
+              "header": [],
+              "body": ""
+            }
+          ]
+        },
+        {
+          "name": "Deactivate",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/cargos/1/deactivate",
+              "host": ["{{baseUrl}}"],
+              "path": ["cargos", "1", "deactivate"]
+            },
+            "description": "Changes the cargo status to inactive."
+          },
+          "response": [
+            {
+              "name": "No Content",
+              "status": "OK",
+              "code": 204,
+              "header": [],
+              "body": ""
+            }
+          ]
+        },
+        {
+          "name": "Summary",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/cargos/summary",
+              "host": ["{{baseUrl}}"],
+              "path": ["cargos", "summary"]
+            },
+            "description": "Returns cargo statistics."
+          },
+          "response": [
+            {
+              "name": "OK",
+              "status": "OK",
+              "code": 200,
+              "header": [],
+              "body": "{\n  \"total\": 10,\n  \"active\": 6,\n  \"inactive\": 4\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

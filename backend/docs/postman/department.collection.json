@@ -1,0 +1,214 @@
+{
+  "info": {
+    "name": "LogiCore - Department",
+    "description": "Postman Collection for the Department module of LogiCore.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080/api/v1"
+    }
+  ],
+  "item": [
+    {
+      "name": "Department",
+      "item": [
+        {
+          "name": "Create",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/departments",
+              "host": ["{{baseUrl}}"],
+              "path": ["departments"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Technology\",\n  \"descricao\": \"IT Department\",\n  \"sigla\": \"TI\"\n}"
+            },
+            "description": "Creates a new department."
+          },
+          "response": [
+            {
+              "name": "Created",
+              "status": "OK",
+              "code": 201,
+              "header": [],
+              "body": "{\n  \"id\": 1,\n  \"nome\": \"Technology\",\n  \"descricao\": \"IT Department\",\n  \"sigla\": \"TI\",\n  \"status\": \"ACTIVE\",\n  \"criadoEm\": \"2024-01-01T10:00:00\",\n  \"atualizadoEm\": \"2024-01-01T10:00:00\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Find All",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/departments?search=Technology&status=ACTIVE&page=0&size=20&sort=id,asc",
+              "host": ["{{baseUrl}}"],
+              "path": ["departments"],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "Technology"
+                },
+                {
+                  "key": "status",
+                  "value": "ACTIVE"
+                },
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "20"
+                },
+                {
+                  "key": "sort",
+                  "value": "id,asc"
+                }
+              ]
+            },
+            "description": "Returns a paginated list of departments with optional search and status filters."
+          },
+          "response": [
+            {
+              "name": "OK",
+              "status": "OK",
+              "code": 200,
+              "header": [],
+              "body": "{\n  \"content\": [\n    {\n      \"id\": 1,\n      \"nome\": \"Technology\",\n      \"descricao\": \"IT Department\",\n      \"sigla\": \"TI\",\n      \"status\": \"ACTIVE\",\n      \"criadoEm\": \"2024-01-01T10:00:00\",\n      \"atualizadoEm\": \"2024-01-01T10:00:00\"\n    }\n  ],\n  \"page\": 0,\n  \"size\": 20,\n  \"totalElements\": 1,\n  \"totalPages\": 1\n}"
+            }
+          ]
+        },
+        {
+          "name": "Find By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/departments/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["departments", "1"]
+            },
+            "description": "Returns a department by its identifier."
+          },
+          "response": [
+            {
+              "name": "OK",
+              "status": "OK",
+              "code": 200,
+              "header": [],
+              "body": "{\n  \"id\": 1,\n  \"nome\": \"Technology\",\n  \"descricao\": \"IT Department\",\n  \"sigla\": \"TI\",\n  \"status\": \"ACTIVE\",\n  \"criadoEm\": \"2024-01-01T10:00:00\",\n  \"atualizadoEm\": \"2024-01-01T10:00:00\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/departments/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["departments", "1"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Technology Updated\",\n  \"descricao\": \"Updated IT Department\",\n  \"sigla\": \"TI\"\n}"
+            },
+            "description": "Updates department information."
+          },
+          "response": [
+            {
+              "name": "OK",
+              "status": "OK",
+              "code": 200,
+              "header": [],
+              "body": "{\n  \"id\": 1,\n  \"nome\": \"Technology Updated\",\n  \"descricao\": \"Updated IT Department\",\n  \"sigla\": \"TI\",\n  \"status\": \"ACTIVE\",\n  \"criadoEm\": \"2024-01-01T10:00:00\",\n  \"atualizadoEm\": \"2024-01-02T10:00:00\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Activate",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/departments/1/activate",
+              "host": ["{{baseUrl}}"],
+              "path": ["departments", "1", "activate"]
+            },
+            "description": "Changes the department status to ACTIVE."
+          },
+          "response": [
+            {
+              "name": "No Content",
+              "status": "OK",
+              "code": 204,
+              "header": [],
+              "body": ""
+            }
+          ]
+        },
+        {
+          "name": "Deactivate",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/departments/1/deactivate",
+              "host": ["{{baseUrl}}"],
+              "path": ["departments", "1", "deactivate"]
+            },
+            "description": "Changes the department status to INACTIVE."
+          },
+          "response": [
+            {
+              "name": "No Content",
+              "status": "OK",
+              "code": 204,
+              "header": [],
+              "body": ""
+            }
+          ]
+        },
+        {
+          "name": "Summary",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/departments/summary",
+              "host": ["{{baseUrl}}"],
+              "path": ["departments", "summary"]
+            },
+            "description": "Returns department statistics."
+          },
+          "response": [
+            {
+              "name": "OK",
+              "status": "OK",
+              "code": 200,
+              "header": [],
+              "body": "{\n  \"total\": 10,\n  \"active\": 8,\n  \"inactive\": 2\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

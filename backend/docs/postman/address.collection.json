@@ -1,0 +1,204 @@
+{
+  "info": {
+    "name": "LogiCore - Address",
+    "description": "Postman Collection for the Address module of LogiCore.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080/api/v1"
+    }
+  ],
+  "item": [
+    {
+      "name": "Address",
+      "item": [
+        {
+          "name": "Create",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/addresses",
+              "host": ["{{baseUrl}}"],
+              "path": ["addresses"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cep\": \"01001000\",\n  \"logradouro\": \"Praça da Sé\",\n  \"numero\": \"100\",\n  \"complemento\": \"Sala 1\",\n  \"bairro\": \"Sé\",\n  \"cidade\": \"São Paulo\",\n  \"estado\": \"SP\",\n  \"pais\": \"Brasil\",\n  \"latitude\": -23.55052000,\n  \"longitude\": -46.63330800\n}"
+            },
+            "description": "Creates a new address."
+          },
+          "response": [
+            {
+              "name": "Created",
+              "status": "OK",
+              "code": 201,
+              "header": [],
+              "body": "{\n  \"id\": 1,\n  \"cep\": \"01001000\",\n  \"logradouro\": \"Praça da Sé\",\n  \"numero\": \"100\",\n  \"complemento\": \"Sala 1\",\n  \"bairro\": \"Sé\",\n  \"cidade\": \"São Paulo\",\n  \"estado\": \"SP\",\n  \"pais\": \"Brasil\",\n  \"latitude\": -23.55052000,\n  \"longitude\": -46.63330800,\n  \"criadoEm\": \"2024-01-01T10:00:00\",\n  \"atualizadoEm\": \"2024-01-01T10:00:00\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Find All",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/addresses?search=sé&cep=01001000&cidade=São Paulo&estado=SP&pais=Brasil&page=0&size=20&sort=id,asc",
+              "host": ["{{baseUrl}}"],
+              "path": ["addresses"],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "sé"
+                },
+                {
+                  "key": "cep",
+                  "value": "01001000"
+                },
+                {
+                  "key": "cidade",
+                  "value": "São Paulo"
+                },
+                {
+                  "key": "estado",
+                  "value": "SP"
+                },
+                {
+                  "key": "pais",
+                  "value": "Brasil"
+                },
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "20"
+                },
+                {
+                  "key": "sort",
+                  "value": "id,asc"
+                }
+              ]
+            },
+            "description": "Returns a paginated list of addresses with optional search and filters."
+          },
+          "response": [
+            {
+              "name": "OK",
+              "status": "OK",
+              "code": 200,
+              "header": [],
+              "body": "{\n  \"content\": [\n    {\n      \"id\": 1,\n      \"cep\": \"01001000\",\n      \"logradouro\": \"Praça da Sé\",\n      \"numero\": \"100\",\n      \"complemento\": \"Sala 1\",\n      \"bairro\": \"Sé\",\n      \"cidade\": \"São Paulo\",\n      \"estado\": \"SP\",\n      \"pais\": \"Brasil\",\n      \"latitude\": -23.55052000,\n      \"longitude\": -46.63330800,\n      \"criadoEm\": \"2024-01-01T10:00:00\",\n      \"atualizadoEm\": \"2024-01-01T10:00:00\"\n    }\n  ],\n  \"page\": 0,\n  \"size\": 20,\n  \"totalElements\": 1,\n  \"totalPages\": 1\n}"
+            }
+          ]
+        },
+        {
+          "name": "Find By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/addresses/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["addresses", "1"]
+            },
+            "description": "Returns an address by its identifier."
+          },
+          "response": [
+            {
+              "name": "OK",
+              "status": "OK",
+              "code": 200,
+              "header": [],
+              "body": "{\n  \"id\": 1,\n  \"cep\": \"01001000\",\n  \"logradouro\": \"Praça da Sé\",\n  \"numero\": \"100\",\n  \"complemento\": \"Sala 1\",\n  \"bairro\": \"Sé\",\n  \"cidade\": \"São Paulo\",\n  \"estado\": \"SP\",\n  \"pais\": \"Brasil\",\n  \"latitude\": -23.55052000,\n  \"longitude\": -46.63330800,\n  \"criadoEm\": \"2024-01-01T10:00:00\",\n  \"atualizadoEm\": \"2024-01-01T10:00:00\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/addresses/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["addresses", "1"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cidade\": \"Campinas\",\n  \"estado\": \"SP\",\n  \"pais\": \"Brasil\"\n}"
+            },
+            "description": "Updates address information. Fields not provided are preserved."
+          },
+          "response": [
+            {
+              "name": "OK",
+              "status": "OK",
+              "code": 200,
+              "header": [],
+              "body": "{\n  \"id\": 1,\n  \"cep\": \"01001000\",\n  \"logradouro\": \"Praça da Sé\",\n  \"numero\": \"100\",\n  \"complemento\": \"Sala 1\",\n  \"bairro\": \"Sé\",\n  \"cidade\": \"Campinas\",\n  \"estado\": \"SP\",\n  \"pais\": \"Brasil\",\n  \"latitude\": -23.55052000,\n  \"longitude\": -46.63330800,\n  \"criadoEm\": \"2024-01-01T10:00:00\",\n  \"atualizadoEm\": \"2024-01-02T10:00:00\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Delete",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/addresses/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["addresses", "1"]
+            },
+            "description": "Deletes an address by its identifier."
+          },
+          "response": [
+            {
+              "name": "No Content",
+              "status": "OK",
+              "code": 204,
+              "header": [],
+              "body": ""
+            }
+          ]
+        },
+        {
+          "name": "Summary",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/addresses/summary",
+              "host": ["{{baseUrl}}"],
+              "path": ["addresses", "summary"]
+            },
+            "description": "Returns address statistics."
+          },
+          "response": [
+            {
+              "name": "OK",
+              "status": "OK",
+              "code": 200,
+              "header": [],
+              "body": "{\n  \"total\": 10,\n  \"withCoordinates\": 7,\n  \"withoutCoordinates\": 3\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
