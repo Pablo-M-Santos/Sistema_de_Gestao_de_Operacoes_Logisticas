@@ -183,7 +183,10 @@ public class EmployeeService {
         }
 
         if (request.getDataAdmissao() != null) employee.setDataAdmissao(request.getDataAdmissao());
-        if (request.getStatus() != null) employee.setStatus(request.getStatus());
+        if (request.getStatus() != null) {
+            validator.validateStatus(request.getStatus());
+            employee.setStatus(request.getStatus());
+        }
 
         return mapper.toResponse(repository.save(employee));
 

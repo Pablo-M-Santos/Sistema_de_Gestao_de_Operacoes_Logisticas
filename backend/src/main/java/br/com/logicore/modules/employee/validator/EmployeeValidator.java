@@ -1,5 +1,6 @@
 package br.com.logicore.modules.employee.validator;
 
+import br.com.logicore.common.exception.BusinessException;
 import br.com.logicore.common.exception.DuplicateResourceException;
 import br.com.logicore.modules.employee.repository.EmployeeRepository;
 import org.springframework.stereotype.Component;
@@ -80,5 +81,10 @@ public class EmployeeValidator {
 
     }
 
+    public void validateStatus(String status) {
+        if (status == null || (!"ACTIVE".equals(status) && !"INACTIVE".equals(status))) {
+            throw new BusinessException("Status must be ACTIVE or INACTIVE.");
+        }
+    }
 
 }
