@@ -89,17 +89,23 @@ public class CargoService {
 
         Cargo cargo = findCargoById(id);
 
-        if (!cargo.getNome().equalsIgnoreCase(request.getNome())) {
-            validator.validateUniqueNameForUpdate(request.getNome(), id);
+        if (isPresent(request.getNome())) {
+            if (!cargo.getNome().equalsIgnoreCase(request.getNome())) {
+                validator.validateUniqueNameForUpdate(request.getNome(), id);
+            }
+            cargo.setNome(request.getNome());
         }
 
-        if (!cargo.getCodigo().equalsIgnoreCase(request.getCodigo())) {
-            validator.validateUniqueCodeForUpdate(request.getCodigo(), id);
+        if (isPresent(request.getCodigo())) {
+            if (!cargo.getCodigo().equalsIgnoreCase(request.getCodigo())) {
+                validator.validateUniqueCodeForUpdate(request.getCodigo(), id);
+            }
+            cargo.setCodigo(request.getCodigo());
         }
 
-        cargo.setNome(request.getNome());
-        cargo.setDescricao(request.getDescricao());
-        cargo.setCodigo(request.getCodigo());
+        if (request.getDescricao() != null) {
+            cargo.setDescricao(request.getDescricao());
+        }
 
         if (request.getAtivo() != null && !Objects.equals(cargo.getAtivo(), request.getAtivo())) {
             cargo.setAtivo(request.getAtivo());
@@ -116,6 +122,10 @@ public class CargoService {
     @Transactional
     public void deactivate(Long id) {
         changeStatus(id, false);
+    }
+
+    private boolean isPresent(String value) {
+        return value != null && !value.isBlank();
     }
 
     private Cargo findCargoById(Long id) {

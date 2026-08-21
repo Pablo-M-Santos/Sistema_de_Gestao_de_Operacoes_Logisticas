@@ -269,10 +269,166 @@ class CargoServiceTest {
         Page<Cargo> page = new PageImpl<>(List.of());
 
         when(repository.findAll(any(Specification.class), eq(pageable))).thenReturn(page);
-
         PageResponse<CargoResponse> result = service.findAll("   ", null, pageable);
 
         assertThat(result.getContent()).isEmpty();
     }
+
+    @Test
+    void shouldUpdateCargoPartiallyKeepingNomeAndCodigo() {
+        Cargo cargo = Cargo.builder()
+                .id(1L)
+                .nome("Analyst")
+                .codigo("ANL")
+                .descricao("Old description")
+                .ativo(true)
+                .build();
+
+        UpdateCargoRequest request = new UpdateCargoRequest();
+        request.setDescricao("New description");
+
+        CargoResponse response = CargoResponse.builder()
+                .nome("Analyst")
+                .codigo("ANL")
+                .descricao("New description")
+                .ativo(true)
+                .build();
+
+        when(repository.findById(1L)).thenReturn(Optional.of(cargo));
+        when(repository.save(cargo)).thenReturn(cargo);
+        when(mapper.toResponse(cargo)).thenReturn(response);
+
+        CargoResponse result = service.update(1L, request);
+
+        assertThat(result.getDescricao()).isEqualTo("New description");
+        assertThat(cargo.getNome()).isEqualTo("Analyst");
+        assertThat(cargo.getCodigo()).isEqualTo("ANL");
+        verify(validator, never()).validateUniqueNameForUpdate(anyString(), anyLong());
+        verify(validator, never()).validateUniqueCodeForUpdate(anyString(), anyLong());
+        verify(repository).save(cargo);
+    }
+
+    @Test
+    void shouldUpdateCargoAtivoOnly() {
+        Cargo cargo = Cargo.builder()
+                .id(1L)
+                .nome("Analyst")
+                .codigo("ANL")
+                .descricao("Description")
+                .ativo(true)
+                .build();
+
+        UpdateCargoRequest request = new UpdateCargoRequest();
+        request.setAtivo(false);
+
+        CargoResponse response = CargoResponse.builder()
+                .nome("Analyst")
+                .codigo("ANL")
+                .descricao("Description")
+                .ativo(false)
+                .build();
+
+        when(repository.findById(1L)).thenReturn(Optional.of(cargo));
+        when(repository.save(cargo)).thenReturn(cargo);
+        when(mapper.toResponse(cargo)).thenReturn(response);
+
+        CargoResponse result = service.update(1L, request);
+
+        assertThat(result.getAtivo()).isFalse();
+        assertThat(cargo.getNome()).isEqualTo("Analyst");
+        assertThat(cargo.getCodigo()).isEqualTo("ANL");
+        assertThat(cargo.getDescricao()).isEqualTo("Description");
+        verify(validator, never()).validateUniqueNameForUpdate(anyString(), anyLong());
+        verify(validator, never()).validateUniqueCodeForUpdate(anyString(), anyLong());
+    }
+
+    @Test
+    void shouldIgnoreBlankNomeOnPartialUpdate() {
+        Cargo cargo = Cargo.builder()
+                .id(1L)
+                .nome("Analyst")
+                .codigo("ANL")
+                .ativo(true)
+                .build();
+
+        UpdateCargoRequest request = new UpdateCargoRequest();
+        request.setNome("   ");
+        request.setDescricao("Updated");
+
+        CargoResponse response = CargoResponse.builder()
+                .nome("Analyst")
+                .codigo("ANL")
+                .descricao("Updated")
+                .ativo(true)
+                .build();
+
+        when(repository.findById(1L)).thenReturn(Optional.of(cargo));
+        when(repository.save(cargo)).thenReturn(cargo);
+        when(mapper.toResponse(cargo)).thenReturn(response);
+
+        service.update(1L, request);
+
+        assertThat(cargo.getNome()).isEqualTo("Analyst");
+        verify(validator, never()).validateUniqueNameForUpdate(anyString(), anyLong());
+    }
+
+    @Test
+    void shouldIgnoreBlankCodigoOnPartialUpdate() {
+        Cargo cargo = Cargo.builder()
+                .id(1L)
+                .nome("Analyst")
+                .codigo("ANL")
+                .ativo(true)
+                .build();
+
+        UpdateCargoRequest request = new UpdateCargoRequest();
+        request.setCodigo("");
+
+        CargoResponse response = CargoResponse.builder()
+                .nome("Analyst")
+                .codigo("ANL")
+                .ativo(true)
+                .build();
+
+        when(repository.findById(1L)).thenReturn(Optional.of(cargo));
+        when(repository.save(cargo)).thenReturn(cargo);
+        when(mapper.toResponse(cargo)).thenReturn(response);
+
+        service.update(1L, request);
+
+        assertThat(cargo.getCodigo()).isEqualTo("ANL");
+        verify(validator, never()).validateUniqueCodeForUpdate(anyString(), anyLong());
+    }
+
+    @Test
+    void shouldUpdateAndClearDescricao() {
+        Cargo cargo = Cargo.builder()
+                .id(1L)
+                .nome("Analyst")
+                .codigo("ANL")
+                .descricao("Old")
+                .ativo(true)
+                .build();
+
+        UpdateCargoRequest request = new UpdateCargoRequest();
+        request.setDescricao("");
+
+        CargoResponse response = CargoResponse.builder()
+                .nome("Analyst")
+                .codigo("ANL")
+                .descricao("")
+                .ativo(true)
+                .build();
+
+        when(repository.findById(1L)).thenReturn(Optional.of(cargo));
+        when(repository.save(cargo)).thenReturn(cargo);
+        when(mapper.toResponse(cargo)).thenReturn(response);
+
+        CargoResponse result = service.update(1L, request);
+
+        assertThat(result.getDescricao()).isEqualTo("");
+        assertThat(cargo.getDescricao()).isEqualTo("");
+    }
+
 }
 
