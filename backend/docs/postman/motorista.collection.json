@@ -1,0 +1,218 @@
+{
+  "info": {
+    "name": "LogiCore - Motorista",
+    "description": "Postman Collection for the Motorista module of LogiCore.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080/api/v1"
+    }
+  ],
+  "item": [
+    {
+      "name": "Motorista",
+      "item": [
+        {
+          "name": "Create",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/motoristas",
+              "host": ["{{baseUrl}}"],
+              "path": ["motoristas"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"funcionarioId\": 1,\n  \"cnh\": \"12345678901\",\n  \"categoria\": \"E\",\n  \"validadeCnh\": \"2025-12-31\",\n  \"observacoes\": \"Motorista experiente\"\n}"
+            },
+            "description": "Creates a new driver linked to an existing employee."
+          },
+          "response": [
+            {
+              "name": "Created",
+              "status": "OK",
+              "code": 201,
+              "header": [],
+              "body": "{\n  \"id\": 1,\n  \"funcionarioId\": 1,\n  \"funcionarioNome\": \"João Motorista\",\n  \"funcionarioMatricula\": \"MAT001\",\n  \"cnh\": \"12345678901\",\n  \"categoria\": \"E\",\n  \"validadeCnh\": \"2025-12-31\",\n  \"observacoes\": \"Motorista experiente\",\n  \"criadoEm\": \"2024-01-01T10:00:00\",\n  \"atualizadoEm\": \"2024-01-01T10:00:00\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Find All",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/motoristas?search=joao&categoria=E&funcionarioId=1&page=0&size=20&sort=id,asc",
+              "host": ["{{baseUrl}}"],
+              "path": ["motoristas"],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "joao"
+                },
+                {
+                  "key": "categoria",
+                  "value": "E"
+                },
+                {
+                  "key": "funcionarioId",
+                  "value": "1"
+                },
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "20"
+                },
+                {
+                  "key": "sort",
+                  "value": "id,asc"
+                }
+              ]
+            },
+            "description": "Returns a paginated list of drivers with optional search and filters."
+          },
+          "response": [
+            {
+              "name": "OK",
+              "status": "OK",
+              "code": 200,
+              "header": [],
+              "body": "{\n  \"content\": [\n    {\n      \"id\": 1,\n      \"funcionarioId\": 1,\n      \"funcionarioNome\": \"João Motorista\",\n      \"funcionarioMatricula\": \"MAT001\",\n      \"cnh\": \"12345678901\",\n      \"categoria\": \"E\",\n      \"validadeCnh\": \"2025-12-31\",\n      \"observacoes\": \"Motorista experiente\",\n      \"criadoEm\": \"2024-01-01T10:00:00\",\n      \"atualizadoEm\": \"2024-01-01T10:00:00\"\n    }\n  ],\n  \"page\": 0,\n  \"size\": 20,\n  \"totalElements\": 1,\n  \"totalPages\": 1\n}"
+            }
+          ]
+        },
+        {
+          "name": "Find By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/motoristas/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["motoristas", "1"]
+            },
+            "description": "Returns a driver by its identifier."
+          },
+          "response": [
+            {
+              "name": "OK",
+              "status": "OK",
+              "code": 200,
+              "header": [],
+              "body": "{\n  \"id\": 1,\n  \"funcionarioId\": 1,\n  \"funcionarioNome\": \"João Motorista\",\n  \"funcionarioMatricula\": \"MAT001\",\n  \"cnh\": \"12345678901\",\n  \"categoria\": \"E\",\n  \"validadeCnh\": \"2025-12-31\",\n  \"observacoes\": \"Motorista experiente\",\n  \"criadoEm\": \"2024-01-01T10:00:00\",\n  \"atualizadoEm\": \"2024-01-01T10:00:00\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Find By Employee ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/motoristas/employee/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["motoristas", "employee", "1"]
+            },
+            "description": "Returns the driver associated with the given employee."
+          },
+          "response": [
+            {
+              "name": "OK",
+              "status": "OK",
+              "code": 200,
+              "header": [],
+              "body": "{\n  \"id\": 1,\n  \"funcionarioId\": 1,\n  \"funcionarioNome\": \"João Motorista\",\n  \"funcionarioMatricula\": \"MAT001\",\n  \"cnh\": \"12345678901\",\n  \"categoria\": \"E\",\n  \"validadeCnh\": \"2025-12-31\",\n  \"observacoes\": \"Motorista experiente\",\n  \"criadoEm\": \"2024-01-01T10:00:00\",\n  \"atualizadoEm\": \"2024-01-01T10:00:00\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/motoristas/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["motoristas", "1"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"cnh\": \"12345678901\",\n  \"categoria\": \"E\",\n  \"validadeCnh\": \"2026-12-31\",\n  \"observacoes\": \"Motorista experiente e treinado\"\n}"
+            },
+            "description": "Updates driver information."
+          },
+          "response": [
+            {
+              "name": "OK",
+              "status": "OK",
+              "code": 200,
+              "header": [],
+              "body": "{\n  \"id\": 1,\n  \"funcionarioId\": 1,\n  \"funcionarioNome\": \"João Motorista\",\n  \"funcionarioMatricula\": \"MAT001\",\n  \"cnh\": \"12345678901\",\n  \"categoria\": \"E\",\n  \"validadeCnh\": \"2026-12-31\",\n  \"observacoes\": \"Motorista experiente e treinado\",\n  \"criadoEm\": \"2024-01-01T10:00:00\",\n  \"atualizadoEm\": \"2024-01-02T10:00:00\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Delete",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/motoristas/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["motoristas", "1"]
+            },
+            "description": "Deletes a driver permanently."
+          },
+          "response": [
+            {
+              "name": "No Content",
+              "status": "OK",
+              "code": 204,
+              "header": [],
+              "body": ""
+            }
+          ]
+        },
+        {
+          "name": "Summary",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/motoristas/summary",
+              "host": ["{{baseUrl}}"],
+              "path": ["motoristas", "summary"]
+            },
+            "description": "Returns driver statistics."
+          },
+          "response": [
+            {
+              "name": "OK",
+              "status": "OK",
+              "code": 200,
+              "header": [],
+              "body": "{\n  \"total\": 10\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

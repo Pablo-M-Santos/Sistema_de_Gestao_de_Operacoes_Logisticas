@@ -1,0 +1,188 @@
+{
+  "info": {
+    "name": "LogiCore - Perfil",
+    "description": "Postman Collection for the Perfil module of LogiCore.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080/api/v1"
+    }
+  ],
+  "item": [
+    {
+      "name": "Perfil",
+      "item": [
+        {
+          "name": "Create",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/perfis",
+              "host": ["{{baseUrl}}"],
+              "path": ["perfis"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Administrador\",\n  \"descricao\": \"Perfil com acesso total\"\n}"
+            },
+            "description": "Creates a new profile."
+          },
+          "response": [
+            {
+              "name": "Created",
+              "status": "OK",
+              "code": 201,
+              "header": [],
+              "body": "{\n  \"id\": 1,\n  \"nome\": \"Administrador\",\n  \"descricao\": \"Perfil com acesso total\",\n  \"criadoEm\": \"2024-01-01T10:00:00\",\n  \"atualizadoEm\": \"2024-01-01T10:00:00\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Find All",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/perfis?search=admin&page=0&size=20&sort=id,asc",
+              "host": ["{{baseUrl}}"],
+              "path": ["perfis"],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "admin"
+                },
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "20"
+                },
+                {
+                  "key": "sort",
+                  "value": "id,asc"
+                }
+              ]
+            },
+            "description": "Returns a paginated list of profiles with optional search."
+          },
+          "response": [
+            {
+              "name": "OK",
+              "status": "OK",
+              "code": 200,
+              "header": [],
+              "body": "{\n  \"content\": [\n    {\n      \"id\": 1,\n      \"nome\": \"Administrador\",\n      \"descricao\": \"Perfil com acesso total\",\n      \"criadoEm\": \"2024-01-01T10:00:00\",\n      \"atualizadoEm\": \"2024-01-01T10:00:00\"\n    }\n  ],\n  \"page\": 0,\n  \"size\": 20,\n  \"totalElements\": 1,\n  \"totalPages\": 1\n}"
+            }
+          ]
+        },
+        {
+          "name": "Find By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/perfis/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["perfis", "1"]
+            },
+            "description": "Returns a profile by its identifier."
+          },
+          "response": [
+            {
+              "name": "OK",
+              "status": "OK",
+              "code": 200,
+              "header": [],
+              "body": "{\n  \"id\": 1,\n  \"nome\": \"Administrador\",\n  \"descricao\": \"Perfil com acesso total\",\n  \"criadoEm\": \"2024-01-01T10:00:00\",\n  \"atualizadoEm\": \"2024-01-01T10:00:00\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/perfis/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["perfis", "1"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Administrador Master\",\n  \"descricao\": \"Perfil com acesso total e gerenciamento\"\n}"
+            },
+            "description": "Updates profile information."
+          },
+          "response": [
+            {
+              "name": "OK",
+              "status": "OK",
+              "code": 200,
+              "header": [],
+              "body": "{\n  \"id\": 1,\n  \"nome\": \"Administrador Master\",\n  \"descricao\": \"Perfil com acesso total e gerenciamento\",\n  \"criadoEm\": \"2024-01-01T10:00:00\",\n  \"atualizadoEm\": \"2024-01-02T10:00:00\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Delete",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/perfis/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["perfis", "1"]
+            },
+            "description": "Deletes a profile permanently."
+          },
+          "response": [
+            {
+              "name": "No Content",
+              "status": "OK",
+              "code": 204,
+              "header": [],
+              "body": ""
+            }
+          ]
+        },
+        {
+          "name": "Summary",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/perfis/summary",
+              "host": ["{{baseUrl}}"],
+              "path": ["perfis", "summary"]
+            },
+            "description": "Returns profile statistics."
+          },
+          "response": [
+            {
+              "name": "OK",
+              "status": "OK",
+              "code": 200,
+              "header": [],
+              "body": "{\n  \"total\": 10\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

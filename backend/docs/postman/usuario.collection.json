@@ -1,0 +1,244 @@
+{
+  "info": {
+    "name": "LogiCore - Usuario",
+    "description": "Postman Collection for the Usuario module of LogiCore.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:8080/api/v1"
+    }
+  ],
+  "item": [
+    {
+      "name": "Usuario",
+      "item": [
+        {
+          "name": "Create",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/usuarios",
+              "host": ["{{baseUrl}}"],
+              "path": ["usuarios"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"João Silva\",\n  \"email\": \"joao.silva@empresa.com\",\n  \"senha\": \"123456\",\n  \"funcionarioId\": 1\n}"
+            },
+            "description": "Creates a new user linked to an existing employee."
+          },
+          "response": [
+            {
+              "name": "Created",
+              "status": "OK",
+              "code": 201,
+              "header": [],
+              "body": "{\n  \"id\": 1,\n  \"nome\": \"João Silva\",\n  \"email\": \"joao.silva@empresa.com\",\n  \"status\": \"ACTIVE\",\n  \"ultimoAcesso\": null,\n  \"funcionarioId\": 1,\n  \"criadoEm\": \"2024-01-01T10:00:00\",\n  \"atualizadoEm\": \"2024-01-01T10:00:00\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Find All",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/usuarios?search=joao&email=joao.silva@empresa.com&status=ACTIVE&funcionarioId=1&page=0&size=20&sort=id,asc",
+              "host": ["{{baseUrl}}"],
+              "path": ["usuarios"],
+              "query": [
+                {
+                  "key": "search",
+                  "value": "joao"
+                },
+                {
+                  "key": "email",
+                  "value": "joao.silva@empresa.com"
+                },
+                {
+                  "key": "status",
+                  "value": "ACTIVE"
+                },
+                {
+                  "key": "funcionarioId",
+                  "value": "1"
+                },
+                {
+                  "key": "page",
+                  "value": "0"
+                },
+                {
+                  "key": "size",
+                  "value": "20"
+                },
+                {
+                  "key": "sort",
+                  "value": "id,asc"
+                }
+              ]
+            },
+            "description": "Returns a paginated list of users with optional search and filters."
+          },
+          "response": [
+            {
+              "name": "OK",
+              "status": "OK",
+              "code": 200,
+              "header": [],
+              "body": "{\n  \"content\": [\n    {\n      \"id\": 1,\n      \"nome\": \"João Silva\",\n      \"email\": \"joao.silva@empresa.com\",\n      \"status\": \"ACTIVE\",\n      \"ultimoAcesso\": null,\n      \"funcionarioId\": 1,\n      \"criadoEm\": \"2024-01-01T10:00:00\",\n      \"atualizadoEm\": \"2024-01-01T10:00:00\"\n    }\n  ],\n  \"page\": 0,\n  \"size\": 20,\n  \"totalElements\": 1,\n  \"totalPages\": 1\n}"
+            }
+          ]
+        },
+        {
+          "name": "Find By ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/usuarios/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["usuarios", "1"]
+            },
+            "description": "Returns a user by its identifier."
+          },
+          "response": [
+            {
+              "name": "OK",
+              "status": "OK",
+              "code": 200,
+              "header": [],
+              "body": "{\n  \"id\": 1,\n  \"nome\": \"João Silva\",\n  \"email\": \"joao.silva@empresa.com\",\n  \"status\": \"ACTIVE\",\n  \"ultimoAcesso\": null,\n  \"funcionarioId\": 1,\n  \"criadoEm\": \"2024-01-01T10:00:00\",\n  \"atualizadoEm\": \"2024-01-01T10:00:00\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Update",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/usuarios/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["usuarios", "1"]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"João Silva Updated\",\n  \"email\": \"joao.silva@empresa.com\",\n  \"senha\": \"1234567\",\n  \"funcionarioId\": 1,\n  \"status\": \"INACTIVE\"\n}"
+            },
+            "description": "Updates user information."
+          },
+          "response": [
+            {
+              "name": "OK",
+              "status": "OK",
+              "code": 200,
+              "header": [],
+              "body": "{\n  \"id\": 1,\n  \"nome\": \"João Silva Updated\",\n  \"email\": \"joao.silva@empresa.com\",\n  \"status\": \"INACTIVE\",\n  \"ultimoAcesso\": null,\n  \"funcionarioId\": 1,\n  \"criadoEm\": \"2024-01-01T10:00:00\",\n  \"atualizadoEm\": \"2024-01-02T10:00:00\"\n}"
+            }
+          ]
+        },
+        {
+          "name": "Delete",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/usuarios/1",
+              "host": ["{{baseUrl}}"],
+              "path": ["usuarios", "1"]
+            },
+            "description": "Deletes a user by marking it as INACTIVE."
+          },
+          "response": [
+            {
+              "name": "No Content",
+              "status": "OK",
+              "code": 204,
+              "header": [],
+              "body": ""
+            }
+          ]
+        },
+        {
+          "name": "Activate",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/usuarios/1/activate",
+              "host": ["{{baseUrl}}"],
+              "path": ["usuarios", "1", "activate"]
+            },
+            "description": "Changes the user status to ACTIVE."
+          },
+          "response": [
+            {
+              "name": "No Content",
+              "status": "OK",
+              "code": 204,
+              "header": [],
+              "body": ""
+            }
+          ]
+        },
+        {
+          "name": "Deactivate",
+          "request": {
+            "method": "PATCH",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/usuarios/1/deactivate",
+              "host": ["{{baseUrl}}"],
+              "path": ["usuarios", "1", "deactivate"]
+            },
+            "description": "Changes the user status to INACTIVE."
+          },
+          "response": [
+            {
+              "name": "No Content",
+              "status": "OK",
+              "code": 204,
+              "header": [],
+              "body": ""
+            }
+          ]
+        },
+        {
+          "name": "Summary",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/usuarios/summary",
+              "host": ["{{baseUrl}}"],
+              "path": ["usuarios", "summary"]
+            },
+            "description": "Returns user statistics."
+          },
+          "response": [
+            {
+              "name": "OK",
+              "status": "OK",
+              "code": 200,
+              "header": [],
+              "body": "{\n  \"total\": 10,\n  \"active\": 7,\n  \"inactive\": 3\n}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
