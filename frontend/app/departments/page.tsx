@@ -16,8 +16,6 @@ import { useDepartments } from "@/hooks/departments/useDepartments";
 import { useUpdateDepartment } from "@/hooks/departments/useUpdateDepartment";
 import { useToggleDepartmentStatus } from "@/hooks/departments/useToggleDepartmentStatus";
 
-
-
 import DepartamentoFormModal, {
   DepartamentoFormData,
 } from "@/components/departments/DepartamentoFormModal";
@@ -133,7 +131,6 @@ export default function DepartmentsPage() {
         });
       }
 
-      // fecha o modal imediatamente
       setModalOpen(false);
       setEditing(null);
 
