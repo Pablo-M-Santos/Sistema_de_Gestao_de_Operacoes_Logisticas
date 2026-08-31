@@ -67,3 +67,9 @@ export type EmployeeSummary = {
   withAddress: number;
   withoutAddress: number;
 };
+
+// Exemplo de como deve estar o seu tipo atual:
+// export type ModalSize = "sm" | "md" | "lg" | "xl";
+
+// Atualize para incluir o "3xl":
+export type ModalSize = "sm" | "md" | "lg" | "xl" | "3xl";
